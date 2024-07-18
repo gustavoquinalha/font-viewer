@@ -24,10 +24,10 @@ const FontList: React.FC = () => {
   const [previewText, setPreviewText] = useState<string>(
     "Whereas disregard and contempt for human rights have resulted"
   );
-  const [fontSize, setFontSize] = useState<number>(32); // Default font size
+  const [fontSize, setFontSize] = useState<number>(40); // Default font size
   const [lineHeight, setLineHeight] = useState<number>(1.5); // Default line height
   const [selectedFontStyle, setSelectedFontStyle] = useState<string>(""); // State for selected font style filter
-  const itemsPerPage = 21;
+  const itemsPerPage = 15;
 
   useEffect(() => {
     async function fetchFonts() {
@@ -126,186 +126,211 @@ const FontList: React.FC = () => {
 
   // Opções para o select de estilos de fonte
   const fontStyleOptions = [
-    "thin",
-    "normal",
-    "medium",
-    "bold",
-    "semi-bold",
-    "italic",
-    "black",
-    "extra-black",
+    "Thin",
+    "Normal",
+    "Medium",
+    "Bold",
+    "Semi-Bold",
+    "SemiBold",
+    "Italic",
+    "Black",
+    "Extra-Black",
+    "ExtraBlack",
   ];
 
   return (
     <div className="w-full mx-auto">
-      <div className="flex gap-4 justify-between items-center h-18 py-2 px-4 w-full mx-auto sticky top-0 left-0 bg-zinc-950/90 border-b border-zinc-800 backdrop-blur z-50">
+      <div className="flex gap-4 justify-between items-center h-16 py-2 px-4 w-full mx-auto sticky top-0 left-0 bg-zinc-950/80 border-b border-zinc-800 backdrop-blur-sm z-50">
         <div className="flex items-center gap-2">
           <div className="text-white font-bold whitespace-nowrap text-sm md:text-base">
             Font Viewer
           </div>
-          <div className="flex flex-wrap items-center justify-center text-center gap-1 border border-zinc-800 bg-zinc-900/50 px-2 py-1 rounded">
-            <span className="text-xs text-white">{filteredFonts.length}</span>
-            <span className="text-xs text-zinc-400">Fonts found</span>
-          </div>
         </div>
 
-        <div className="flex gap-2 w-full max-w-lg">
-          <input
-            type="text"
-            className="w-full h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded"
-            placeholder="Search fonts..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
+        <div className="flex gap-2 w-full items-center justify-center">
+          <div className="flex gap-2 w-full max-w-80">
+            <input
+              type="text"
+              className="w-full h-10 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 border border-zinc-800 rounded"
+              placeholder="Search fonts..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+
+          <div className="flex flex-col items-center gap-2 w-full max-w-48 relative">
+            <span className="absolute top-3 left-3 text-xs font-bold text-white">
+              Font Style
+            </span>
+            <select
+              className="pl-20 w-full h-10 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded"
+              value={selectedFontStyle}
+              onChange={handleSelectedFontStyleChange}
+            >
+              <option value="">All</option>
+              {fontStyleOptions.map((option, index) => (
+                <option key={index} value={option.toLowerCase()}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <button
-            className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
+            className="relative h-10 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap flex items-center gap-4"
             onClick={toggleSortOrder}
           >
+            <span className="text-xs font-bold text-white">Order</span>
             {sortOrder === "asc" ? "A - Z" : "Z - A"}
           </button>
         </div>
 
-        <div className="flex gap-1 justify-center items-center">
-          <button
-            className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
-            onClick={prevPage}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-
-          <select
-            className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
-            value={currentPage}
-            onChange={(e) => setCurrentPage(Number(e.target.value))}
-          >
-            {pageOptions.map((page) => (
-              <option key={page} value={page}>
-                Page {page}
-              </option>
-            ))}
-          </select>
-
-          <button
-            className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
-            onClick={nextPage}
-            disabled={currentPage === totalPages()}
-          >
-            Next
-          </button>
+        <div
+          className={`text-xs whitespace-nowrap flex items-center justify-center text-center gap-1 bg-zinc-900/50 px-3 py-1.5 rounded-full ${
+            filteredFonts.length > 0
+              ? "text-green-400 bg-green-600/10"
+              : "text-red-500 bg-red-600/10"
+          }`}
+        >
+          <span className="font-bold">{filteredFonts.length}</span>
+          <span>Fonts</span>
         </div>
       </div>
 
       {error ? (
-        <div className="text-center p-4">
+        <div className="text-center text-sm p-8 text-zinc-400">
           <p>{error}</p>
         </div>
       ) : (
         <div className="w-full flex flex-col md:flex-row">
-          <div className="w-full md:max-w-80 min-w-80 p-8 lg:sticky top-10 left-0 overflow-hidden z-10 h-fit">
-            <div className="w-full rounded flex flex-col gap-2 items-center justify-center text-center">
-              <h1 className="text-4xl text-white font-bold">
-                Explore your installed fonts with ease.
-              </h1>
-              <h2 className="text-xl text-zinc-500 font-normal">
-                Discover and visualize a variety of styles directly in your
-                browser.
-              </h2>
-              <div className="w-full rounded flex flex-col gap-2 items-center justify-center text-center mx-auto mt-8">
-                <h3 className="text-sm text-zinc-200 font-normal">
-                  Type your text to preview
-                </h3>
+          <div className="md:max-w-80 w-max-w-80 p-4 lg:sticky top-16 left-0 overflow-hidden z-10 h-fit">
+            <div className="w-full rounded flex flex-col gap-8 items-center justify-center mx-auto">
+              <div className="flex w-full flex-col gap-2">
+                <h1 className="text-xl text-white font-bold">
+                  Explore your installed fonts with ease.
+                </h1>
+                <h2 className="text-sm text-zinc-500 font-normal">
+                  Discover and visualize a variety of styles directly in your
+                  browser.
+                </h2>
+              </div>
 
-                <div className="flex gap-2 items-center w-full">
-                  <textarea
-                    id="textTest"
-                    rows={4}
-                    className="resize-none text-center w-full cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 border border-zinc-800 rounded whitespace-nowrap"
-                    value={previewText}
-                    onChange={handlePreviewTextChange}
-                  />
-                </div>
+              <div className="flex flex-col items-center gap-2 w-full">
+                <label className="text-xs text-white flex items-center justify-between gap-2 w-full">
+                  <span className="font-bold text-white">
+                    Type your text to preview
+                  </span>
+                </label>
+                <textarea
+                  id="textTest"
+                  rows={4}
+                  className="resize-none w-full cursor-pointer p-2 text-xs text-white bg-zinc-950 border border-zinc-800 rounded"
+                  placeholder="Hello World"
+                  value={previewText}
+                  onChange={handlePreviewTextChange}
+                />
+              </div>
 
-                <div className="flex flex-col items-center gap-2 w-full">
-                  <label className="text-xs text-white">
-                    Font Size: {fontSize}px
-                  </label>
-                  <input
-                    type="range"
-                    min="10"
-                    max="60"
-                    value={fontSize}
-                    onChange={handleFontSizeChange}
-                    className="cursor-pointer w-full"
-                  />
-                </div>
+              <div className="flex flex-col items-center gap-2 w-full">
+                <label className="text-xs text-white flex items-center justify-between gap-2 w-full">
+                  <span className="font-bold text-white">Font size</span>
+                  <span className="text-zinc-400">{fontSize}px</span>
+                </label>
+                <input
+                  type="range"
+                  min="10"
+                  max="60"
+                  value={fontSize}
+                  onChange={handleFontSizeChange}
+                  className="cursor-pointer w-full accent-zinc-600"
+                />
+              </div>
 
-                <div className="flex flex-col items-center gap-2 w-full">
-                  <label className="text-xs text-white">
-                    Line Height: {lineHeight}
-                  </label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="3"
-                    step="0.1"
-                    value={lineHeight}
-                    onChange={handleLineHeightChange}
-                    className="cursor-pointer w-full"
-                  />
-                </div>
-
-                <div className="w-full">
-                  <select
-                    className="w-full h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded"
-                    value={selectedFontStyle}
-                    onChange={handleSelectedFontStyleChange}
-                  >
-                    <option value="">Select Style</option>
-                    {fontStyleOptions.map((option, index) => (
-                      <option key={index} value={option.toLowerCase()}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="flex flex-col items-center gap-2 w-full">
+                <label className="text-xs text-white flex items-center justify-between gap-2 w-full">
+                  <span className="font-bold text-white">Line height</span>
+                  <span className="text-zinc-400">{lineHeight}</span>
+                </label>
+                <input
+                  type="range"
+                  min="1"
+                  max="3"
+                  step="0.1"
+                  value={lineHeight}
+                  onChange={handleLineHeightChange}
+                  className="cursor-pointer w-full accent-zinc-600"
+                />
               </div>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 w-full">
-            {filteredFonts.slice(startIndex, endIndex).map((font, index) => (
-              <div
-                className="group border text-white border-zinc-800 rounded flex flex-col gap-2 bg-zinc-950 hover:bg-zinc-900 hover:border-zinc-700 overflow-hidden"
-                key={index}
+          <div className="flex flex-col p-4 w-full gap-8 pb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4  w-full">
+              {filteredFonts.slice(startIndex, endIndex).map((font, index) => (
+                <div
+                  className="group border text-white border-zinc-800 rounded flex flex-col gap-2 bg-zinc-950 hover:bg-zinc-900 hover:border-zinc-700 overflow-hidden"
+                  key={index}
+                >
+                  <div className="flex flex-col items-center justify-between px-4 py-10">
+                    <div
+                      className="text-4xl text-white leading-none py-6 min-h-32 flex justify-center items-center text-center whitespace-pre-wrap"
+                      style={{
+                        fontFamily: font.family,
+                        fontSize: `${fontSize}px`,
+                        lineHeight: `${lineHeight}`,
+                      }}
+                    >
+                      {previewText}
+                    </div>
+                    <div className="text-base text-zinc-400">{font.family}</div>
+                  </div>
+
+                  <div className="bg-zinc-900 group-hover:bg-zinc-800 px-4 py-6 border-t h-full border-zinc-800 group-hover:border-zinc-700 flex flex-col gap-2">
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-zinc-500">Font fullName</div>
+                      <div className="text-xs text-zinc-200">
+                        {font.fullName}
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="text-xs text-zinc-500">Font style</div>
+                      <div className="text-xs text-zinc-200">{font.style}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex gap-1 justify-center items-center">
+              <button
+                className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
+                onClick={prevPage}
+                disabled={currentPage === 1}
               >
-                <div className="flex flex-col items-center justify-between px-4 py-10">
-                  <div
-                    className="text-4xl text-white leading-none py-6 min-h-32 flex justify-center items-center text-center whitespace-pre-wrap"
-                    style={{
-                      fontFamily: font.family,
-                      fontSize: `${fontSize}px`,
-                      lineHeight: `${lineHeight}`,
-                    }}
-                  >
-                    {previewText}
-                  </div>
-                  <div className="text-base text-zinc-400">{font.family}</div>
-                </div>
+                Previous
+              </button>
 
-                <div className="bg-zinc-900 group-hover:bg-zinc-800 px-4 py-6 border-t h-full border-zinc-800 group-hover:border-zinc-700 flex flex-col gap-2">
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-zinc-500">Font fullName</div>
-                    <div className="text-xs text-zinc-200">{font.fullName}</div>
-                  </div>
+              <select
+                className="h-8 cursor-pointer px-2 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
+                value={currentPage}
+                onChange={(e) => setCurrentPage(Number(e.target.value))}
+              >
+                {pageOptions.map((page) => (
+                  <option key={page} value={page}>
+                    Page {page}
+                  </option>
+                ))}
+              </select>
 
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-zinc-500">Font style</div>
-                    <div className="text-xs text-zinc-200">{font.style}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
+              <button
+                className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
+                onClick={nextPage}
+                disabled={currentPage === totalPages()}
+              >
+                Next
+              </button>
+            </div>
           </div>
         </div>
       )}
