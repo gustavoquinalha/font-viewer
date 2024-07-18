@@ -25,25 +25,26 @@ const FontList: React.FC = () => {
     "Whereas disregard and contempt for human rights have resulted"
   );
   const [fontSize, setFontSize] = useState<number>(40); // Default font size
-  const [lineHeight, setLineHeight] = useState<number>(1.5); // Default line height
+  const [lineHeight, setLineHeight] = useState<number>(1.3); // Default line height
+  const [letterSpacing, setLetterSpacing] = useState<number>(0); // Default line height
   const [selectedFontStyle, setSelectedFontStyle] = useState<string>(""); // State for selected font style filter
   const itemsPerPage = 15;
 
-  useEffect(() => {
-    async function fetchFonts() {
-      try {
-        if (window.queryLocalFonts) {
-          const fontAccess: FontMetadata[] = await window.queryLocalFonts();
-          setFonts(fontAccess);
-        } else {
-          setError("Font access not supported or permission denied");
-        }
-      } catch (err) {
-        setError("Error accessing fonts");
-        console.error(err);
+  const fetchFonts = async () => {
+    try {
+      if (window.queryLocalFonts) {
+        const fontAccess: FontMetadata[] = await window.queryLocalFonts();
+        setFonts(fontAccess);
+      } else {
+        setError("Font access not supported or permission denied");
       }
+    } catch (err) {
+      setError("Error accessing fonts");
+      console.error(err);
     }
+  };
 
+  useEffect(() => {
     fetchFonts();
   }, []);
 
@@ -89,6 +90,12 @@ const FontList: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setLineHeight(Number(event.target.value));
+  };
+
+  const handleLetterSpacing = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setLetterSpacing(Number(event.target.value));
   };
 
   const handleSelectedFontStyleChange = (
@@ -140,7 +147,7 @@ const FontList: React.FC = () => {
 
   return (
     <div className="w-full mx-auto">
-      <div className="flex gap-4 justify-between items-center h-16 py-2 px-4 w-full mx-auto sticky top-0 left-0 bg-zinc-950/80 border-b border-zinc-800 backdrop-blur-sm z-50">
+      <div className="flex gap-4 justify-between items-center h-16 py-2 px-4 w-full mx-auto sticky top-0 left-0 bg-zinc-950/90 border-b border-zinc-800 backdrop-blur-sm z-50">
         <div className="flex items-center gap-2">
           <div className="text-white font-bold whitespace-nowrap text-sm md:text-base">
             Font Viewer
@@ -200,10 +207,17 @@ const FontList: React.FC = () => {
       {error ? (
         <div className="text-center text-sm p-8 text-zinc-400">
           <p>{error}</p>
+          <button
+            className="h-8 cursor-pointer px-4 py-1 text-xs text-white bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded whitespace-nowrap"
+            id="load-fonts"
+            onClick={fetchFonts}
+          >
+            Load fonts
+          </button>
         </div>
       ) : (
         <div className="w-full flex flex-col md:flex-row">
-          <div className="md:max-w-80 w-max-w-80 p-4 lg:sticky top-16 left-0 overflow-hidden z-10 h-fit">
+          <div className="md:max-w-80 w-max-w-80 p-4 md:sticky top-16 left-0 overflow-hidden z-10 h-fit">
             <div className="w-full rounded flex flex-col gap-8 items-center justify-center mx-auto">
               <div className="flex w-full flex-col gap-2">
                 <h1 className="text-xl text-white font-bold">
@@ -239,7 +253,7 @@ const FontList: React.FC = () => {
                 <input
                   type="range"
                   min="10"
-                  max="60"
+                  max="120"
                   value={fontSize}
                   onChange={handleFontSizeChange}
                   className="cursor-pointer w-full accent-zinc-600"
@@ -253,7 +267,7 @@ const FontList: React.FC = () => {
                 </label>
                 <input
                   type="range"
-                  min="1"
+                  min="0"
                   max="3"
                   step="0.1"
                   value={lineHeight}
@@ -261,42 +275,54 @@ const FontList: React.FC = () => {
                   className="cursor-pointer w-full accent-zinc-600"
                 />
               </div>
+
+              <div className="flex flex-col items-center gap-2 w-full">
+                <label className="text-xs text-white flex items-center justify-between gap-2 w-full">
+                  <span className="font-bold text-white">Letter spacing</span>
+                  <span className="text-zinc-400">{letterSpacing}</span>
+                </label>
+                <input
+                  type="range"
+                  min="-1"
+                  max="1"
+                  step="0.1"
+                  value={letterSpacing}
+                  onChange={handleLetterSpacing}
+                  className="cursor-pointer w-full accent-zinc-600"
+                />
+              </div>
             </div>
           </div>
 
           <div className="flex flex-col p-4 w-full gap-8 pb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4  w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4  w-full">
               {filteredFonts.slice(startIndex, endIndex).map((font, index) => (
                 <div
-                  className="group border text-white border-zinc-800 rounded flex flex-col gap-2 bg-zinc-950 hover:bg-zinc-900 hover:border-zinc-700 overflow-hidden"
+                  className="group border border-zinc-800 rounded flex flex-col gap-2 bg-zinc-950 hover:bg-zinc-900 hover:border-zinc-700 overflow-hidden px-8 py-10"
                   key={index}
                 >
-                  <div className="flex flex-col items-center justify-between px-4 py-10">
-                    <div
-                      className="text-4xl text-white leading-none py-6 min-h-32 flex justify-center items-center text-center whitespace-pre-wrap"
-                      style={{
-                        fontFamily: font.family,
-                        fontSize: `${fontSize}px`,
-                        lineHeight: `${lineHeight}`,
-                      }}
-                    >
-                      {previewText}
-                    </div>
-                    <div className="text-base text-zinc-400">{font.family}</div>
+                  <div className="text-xs text-zinc-500 w-full text-center uppercase">
+                    {font.style}
                   </div>
 
-                  <div className="bg-zinc-900 group-hover:bg-zinc-800 px-4 py-6 border-t h-full border-zinc-800 group-hover:border-zinc-700 flex flex-col gap-2">
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-zinc-500">Font fullName</div>
-                      <div className="text-xs text-zinc-200">
-                        {font.fullName}
-                      </div>
-                    </div>
+                  <div
+                    className="w-full text-4xl text-white leading-none py-6 h-full flex justify-center items-center text-center whitespace-pre-wrap"
+                    style={{
+                      fontFamily: font.family,
+                      fontSize: `${fontSize}px`,
+                      lineHeight: `${lineHeight}`,
+                      letterSpacing: `${letterSpacing}rem`,
+                    }}
+                  >
+                    {previewText}
+                  </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="text-xs text-zinc-500">Font style</div>
-                      <div className="text-xs text-zinc-200">{font.style}</div>
-                    </div>
+                  <div className="text-base text-zinc-500 w-full text-center">
+                    {font.family}
+                  </div>
+
+                  <div className="text-xs text-white w-full text-center">
+                    {font.fullName}
                   </div>
                 </div>
               ))}
