@@ -1,9 +1,5 @@
-import Link from "next/link";
+import FontList from "@/components/font-list";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Link href="/fonts">View Fonts</Link>
-    </main>
-  );
+  return <FontList />;
 }
