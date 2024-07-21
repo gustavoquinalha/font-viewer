@@ -28,7 +28,7 @@ const FontList: React.FC = () => {
   const [filteredFontsSelected, setFilteredFontsSelected] = useState<
     FontMetadata[]
   >([]);
-  const itemsPerPage = 6;
+  const itemsPerPage = 12;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState<FontMetadata | null>(null);
   const [activeTab, setActiveTab] = useState<string>("all-fonts");
@@ -250,6 +250,7 @@ const FontList: React.FC = () => {
                     handleFontSelection={handleFontSelection}
                     handleToggleModal={handleToggleModal}
                     textAlign={textAlign}
+                    activeTab={activeTab}
                   />
 
                   <Pagination

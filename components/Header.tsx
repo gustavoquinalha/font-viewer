@@ -1,5 +1,5 @@
 import React from "react";
-import { ModeToggle } from "./mode-toggle";
+import { ModeToggle } from "./ModeToggle";
 import SearchSection from "./SearchSection";
 import TabsSection from "./TabsSection";
 
@@ -43,27 +43,33 @@ const Header: React.FC<HeaderProps> = ({
         <ModeToggle />
       </div>
 
-      <SearchSection
-        loading={loading}
-        error={error}
-        searchTerm={searchTerm}
-        handleSearchChange={handleSearchChange}
-        handleSelectedFontStyleChange={handleSelectedFontStyleChange}
-        fontStyleOptions={fontStyleOptions}
-        selectedFontStyle={selectedFontStyle}
-        handleToggleSortOrder={handleToggleSortOrder}
-        sortOrder={sortOrder}
-        activeTab={activeTab}
-      />
+      {!error ? (
+        <div className="w-full flex flex-col md:flex-row items-center gap-2">
+          <SearchSection
+            loading={loading}
+            error={error}
+            searchTerm={searchTerm}
+            handleSearchChange={handleSearchChange}
+            handleSelectedFontStyleChange={handleSelectedFontStyleChange}
+            fontStyleOptions={fontStyleOptions}
+            selectedFontStyle={selectedFontStyle}
+            handleToggleSortOrder={handleToggleSortOrder}
+            sortOrder={sortOrder}
+            activeTab={activeTab}
+          />
 
-      <TabsSection
-        loading={loading}
-        error={error}
-        activeTab={activeTab}
-        handleToggleActiveTab={handleToggleActiveTab}
-        filteredFonts={filteredFonts}
-        filteredFontsSelected={filteredFontsSelected}
-      />
+          <TabsSection
+            loading={loading}
+            error={error}
+            activeTab={activeTab}
+            handleToggleActiveTab={handleToggleActiveTab}
+            filteredFonts={filteredFonts}
+            filteredFontsSelected={filteredFontsSelected}
+          />
+        </div>
+      ) : (
+        <div></div>
+      )}
     </div>
   );
 };

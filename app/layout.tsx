@@ -1,4 +1,4 @@
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";

@@ -16,11 +16,12 @@ interface FontGridProps {
   fontSize: number;
   lineHeight: number;
   letterSpacing: number;
-  textAlign: 'left' | 'center' | 'right';
+  textAlign: "left" | "center" | "right";
   previewText: string;
   filteredFontsSelected: FontMetadata[];
   handleFontSelection: (font: FontMetadata) => void;
   handleToggleModal: (open: boolean, font: FontMetadata) => void;
+  activeTab: string;
 }
 
 const FontGrid: React.FC<FontGridProps> = ({
@@ -36,6 +37,7 @@ const FontGrid: React.FC<FontGridProps> = ({
   filteredFontsSelected,
   handleFontSelection,
   handleToggleModal,
+  activeTab,
 }) => {
   return (
     <div
@@ -46,7 +48,14 @@ const FontGrid: React.FC<FontGridProps> = ({
     >
       {currentFonts.slice(startIndex, endIndex).map((font, index) => (
         <div
-          className="relative group rounded flex flex-col gap-2 bg-background hover:bg-secondary border border-input text-primary overflow-hidden px-8 py-10"
+          className={cn(
+            "relative group rounded flex flex-col gap-2 bg-secondary/30 hover:bg-secondary dark:hover:bg-secondary/80 border border-input text-primary overflow-hidden px-8 py-10",
+            {
+              "border-foreground":
+                filteredFontsSelected.includes(font) &&
+                activeTab === "all-fonts",
+            }
+          )}
           key={index}
         >
           <div className="absolute top-4 right-4">
