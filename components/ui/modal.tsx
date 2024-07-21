@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "./button";
+import { X } from "lucide-react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -108,7 +109,6 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
   if (!isOpen) return null;
 
   const sanitizeContent = (event: React.SyntheticEvent<HTMLDivElement>) => {
-    // Sanitization logic to prevent XSS or unwanted content
     const allowedTags = ["B", "I", "U", "STRONG", "EM"];
     const sanitizeNode = (node: Node) => {
       if (node.nodeType === 1) {
@@ -121,10 +121,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
           Array.from(element.childNodes).forEach(sanitizeNode);
         }
       } else if (node.nodeType === 3) {
-        // Text
         // No need to sanitize text nodes
       } else {
-        // Remove other types of nodes
         node.parentNode?.removeChild(node);
       }
     };
@@ -133,20 +131,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-background/95 w-full z-50 backdrop-blur">
-      <div className="bg-background border border-border rounded-lg shadow-lg p-8 py-10 w-full max-w-screen-md h-[90vh] flex relative overflow-auto">
+    <div className="fixed inset-0 flex items-center justify-center bg-background/90 w-full z-50 backdrop-blur">
+      <div className="bg-background border border-border rounded-lg shadow-lg p-8 py-10 w-full max-w-screen-xl h-[90vh] flex relative overflow-auto">
+        <div className="absolute top-4 right-4">
+          <Button variant="outline" onClick={onClose}>
+            <X className="w-5 h-5" />
+          </Button>
+        </div>
         {data ? (
-          <div className="w-full">
-            <div className="absolute top-4 right-4">
-              <Button variant="outline" onClick={onClose}>
-                Fechar
-              </Button>
-            </div>
-
+          <div className="w-full max-w-screen-md mx-auto">
             <div className="flex gap-1 items-baseline">
               <div className="text-base text-primary">{data.family}</div>
               <div className="text-base text-primary">/ {data.fullName} /</div>
-              <div className="text-base text-primary uppercase">{data.style}</div>
+              <div className="text-base text-primary uppercase">
+                {data.style}
+              </div>
             </div>
 
             <div className="flex py-8 flex-col gap-8">
@@ -162,33 +161,60 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                 {previewText}
               </div>
 
-              <div
-                className="w-full text-base text-primary/80 leading-none"
+              <h1
                 style={{
                   fontFamily: data.family,
                 }}
                 contentEditable={true}
                 onInput={sanitizeContent}
                 suppressContentEditableWarning={true}
+                className="text-5xl font-bold text-primary"
               >
                 {previewText}
-              </div>
+              </h1>
 
-              <div
-                className="w-full text-base text-primary/50 leading-none"
+              <h2
                 style={{
                   fontFamily: data.family,
                 }}
                 contentEditable={true}
                 onInput={sanitizeContent}
                 suppressContentEditableWarning={true}
+                className="text-3xl font-normal text-primary"
               >
                 {previewText}
-              </div>
+              </h2>
+
+              <p
+                style={{
+                  fontFamily: data.family,
+                }}
+                contentEditable={true}
+                onInput={sanitizeContent}
+                suppressContentEditableWarning={true}
+                className="text-base text-primary"
+              >
+                {previewText}
+              </p>
+
+              <p
+                style={{
+                  fontFamily: data.family,
+                }}
+                contentEditable={true}
+                onInput={sanitizeContent}
+                suppressContentEditableWarning={true}
+                className="text-base text-italic text-primary"
+              >
+                {previewText}
+              </p>
 
               <div className="w-full grid grid-cols-4 md:grid-cols-8 gap-2">
                 {allCharacters.map((char, index) => (
-                  <div key={index} className="border p-4 text-center text-xl rounded hover:bg-secondary">
+                  <div
+                    key={index}
+                    className="border p-4 text-center text-xl rounded hover:bg-secondary"
+                  >
                     {char}
                   </div>
                 ))}

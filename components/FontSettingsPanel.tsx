@@ -152,6 +152,10 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
             step={0.1}
           />
         </div>
+
+        <div className="">
+          <span className="text-muted-foreground">This is an open source project, <a className="hover:underline hover:text-primary" href="https://github.com/gustavoquinalha/font-preview" target="blank">click here to contribute</a>.</span>
+        </div>
       </div>
     </div>
   );

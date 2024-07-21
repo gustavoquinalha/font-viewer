@@ -28,10 +28,10 @@ const TabsSection: React.FC<TabsSectionProps> = ({
       <Tabs value={activeTab} onValueChange={handleToggleActiveTab} defaultValue="all-fonts">
         <TabsList>
           <TabsTrigger value="all-fonts">
-            All fonts ({filteredFonts.length})
+            All fonts <span className='hidden lg:block'>({filteredFonts.length})</span>
           </TabsTrigger>
           <TabsTrigger value="selected-fonts">
-            Selected fonts ({filteredFontsSelected.length})
+            Selected fonts <span className='hidden lg:block'>({filteredFontsSelected.length})</span>
           </TabsTrigger>
         </TabsList>
       </Tabs>

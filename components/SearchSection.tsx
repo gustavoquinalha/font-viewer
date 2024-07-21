@@ -58,11 +58,13 @@ const SearchSection: React.FC<SearchSectionProps> = ({
       </div>
 
       <Select onValueChange={handleSelectedFontStyleChange}>
-        <SelectTrigger className="w-full max-w-full md:max-w-44 relative pl-20">
+        <SelectTrigger className="w-full max-w-full md:max-w-36 lg:max-w-44 relative pl-20 md:pl-3 lg:pl-20">
           <SelectValue
             placeholder={`${selectedFontStyle || "Select font style"}`}
           />
-          <div className="absolute top-2 left-2 font-medium">Font style</div>
+          <div className="absolute top-2 left-2 font-medium block md:hidden lg:block">
+            Font style
+          </div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -78,13 +80,15 @@ const SearchSection: React.FC<SearchSectionProps> = ({
       </Select>
 
       <Select onValueChange={handleToggleSortOrder}>
-        <SelectTrigger className="w-full max-w-full md:max-w-36 relative pl-14">
+        <SelectTrigger className="w-full max-w-full md:max-w-32 lg:max-w-36 relative pl-14 md:pl-3 lg:pl-14">
           <SelectValue
             placeholder={`${
               sortOrder === "asc" ? "A-z" : "Z-a" || "Select order"
             }`}
           />
-          <div className="absolute top-2 left-2 font-medium">Order</div>
+          <div className="absolute top-2 left-2 font-medium block md:hidden lg:block">
+            Order
+          </div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
