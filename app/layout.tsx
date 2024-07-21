@@ -11,8 +11,10 @@ const fontSans = FontSans({
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Font Viewer",
-  description: "",
+  title: "Font Viewer - Explore your installed fonts with ease",
+  description:
+    "Discover and visualize a variety of styles directly in your browser.",
+  applicationName: "Font Viewer",
 };
 
 export default function RootLayout({
