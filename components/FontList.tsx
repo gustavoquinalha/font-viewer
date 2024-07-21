@@ -106,18 +106,14 @@ const FontList: React.FC = () => {
   };
 
   const handleSwitchCheckedChange = (event: string) => {
-    console.log("handleSwitchCheckedChange", event);
-
     setSwitchChecked(event);
   };
 
   const handleTextAlignChange = (event: any) => {
-    console.log("handleTextAlignChange", event);
     setTextAlign(event);
   };
 
   const handleSelectedFontStyleChange = (value: string) => {
-    console.log("handleSelectedFontStyleChange", value);
     setSelectedFontStyle(value);
   };
 
@@ -131,8 +127,6 @@ const FontList: React.FC = () => {
   };
 
   const handleToggleActiveTab = (value: string) => {
-    console.log("handleToggleActiveTab", value);
-
     setActiveTab(value);
     setCurrentPage(1);
   };
