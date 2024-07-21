@@ -22,8 +22,6 @@ export default function RootLayout({
         <title>Font Viewer - Explore your installed fonts with ease</title>
         <link rel="canonical" href="https://font-viewer.vercel.app/" />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <meta name="robots" content="" />
-        <meta name="googlebot" content="" />
         <meta
           name="description"
           content="Discover and visualize a variety of styles directly in your browser."
