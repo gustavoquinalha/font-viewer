@@ -1,5 +1,4 @@
 import { ThemeProvider } from "@/components/theme-provider";
-import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 
 import { cn } from "@/lib/utils";
@@ -10,14 +9,6 @@ const fontSans = FontSans({
 });
 import "./globals.css";
 
-export const metadata: Metadata = {
-  title: "Font Viewer - Explore your installed fonts with ease",
-  description:
-    "Discover and visualize a variety of styles directly in your browser.",
-  applicationName: "Font Viewer",
-  // opengraph.image: "https://font-viewer.vercel.app/image.png",
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,10 +17,34 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta name="color-scheme" content="dark" />
+        {/* <!-- HTML Meta Tags --> */}
+        <base href="/" />
+        <title>Font Viewer - Explore your installed fonts with ease</title>
+        <link rel="canonical" href="https://font-viewer.vercel.app/" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <meta name="robots" content="" />
+        <meta name="googlebot" content="" />
+        <meta
+          name="description"
+          content="Discover and visualize a variety of styles directly in your browser."
+        />
+        <meta name="author" content="Gustavo Quinalha" />
+        <meta name="theme-color" content="dark" />
+
+        {/* <!-- Google Search Engine --> */}
+        <meta itemProp="name" content="Font Viewer" />
+        <meta
+          itemProp="description"
+          content="Discover and visualize a variety of styles directly in your browser."
+        />
+        <meta
+          itemProp="image"
+          content="https://font-viewer.vercel.app/image.png"
+        />
+
+        {/* <!-- Facebook Meta Tags --> */}
+        <meta property="og:url" content="https://font-viewer.vercel.app/" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://font-viewer.vercel.app" />
-        <meta property="og:site_name" content="Font Viewer" />
         <meta
           property="og:title"
           content="Font Viewer - Explore your installed fonts with ease"
@@ -42,6 +57,24 @@ export default function RootLayout({
           property="og:image"
           content="https://font-viewer.vercel.app/image.png"
         />
+        <meta property="og:locale" content="en_US" />
+
+        {/* <!-- Twitter Meta Tags --> */}
+        <meta name="twitter:card" content="summary" />
+        <meta
+          name="twitter:title"
+          content="Font Viewer - Explore your installed fonts with ease"
+        />
+        <meta name="twitter:site" content="@gustavoquinalha" />
+        <meta
+          name="twitter:description"
+          content="Discover and visualize a variety of styles directly in your browser."
+        />
+        <meta
+          name="twitter:image"
+          content="https://font-viewer.vercel.app/image.png"
+        />
+        <meta name="twitter:image:alt" content="Font Viewer logo" />
       </head>
       <body
         className={cn(
