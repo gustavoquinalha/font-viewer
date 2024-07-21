@@ -15,6 +15,7 @@ export const metadata: Metadata = {
   description:
     "Discover and visualize a variety of styles directly in your browser.",
   applicationName: "Font Viewer",
+  // opengraph.image: "https://font-viewer.vercel.app/image.png",
 };
 
 export default function RootLayout({
@@ -24,6 +25,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="color-scheme" content="dark" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://font-viewer.vercel.app" />
+        <meta property="og:site_name" content="Font Viewer" />
+        <meta
+          property="og:title"
+          content="Font Viewer - Explore your installed fonts with ease"
+        />
+        <meta
+          property="og:description"
+          content="Discover and visualize a variety of styles directly in your browser."
+        />
+        <meta
+          property="og:image"
+          content="https://font-viewer.vercel.app/image.png"
+        />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background text-foreground font-sans text-base antialiased overflow-y-scroll overflow-x-hidden",
