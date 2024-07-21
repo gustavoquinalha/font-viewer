@@ -46,13 +46,13 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
           <h1 className="text-lg text-primary font-medium">
             Explore your installed fonts with ease.
           </h1>
-          <h2 className="text-sm text-muted-foreground font-normal">
+          <h2 className="text-base text-muted-foreground font-normal">
             Discover and visualize a variety of styles directly in your browser.
           </h2>
         </div>
 
         <div className="flex flex-col gap-2 w-full">
-          <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
+          <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
             <span className="font-medium text-primary">List type</span>
           </label>
           <Tabs
@@ -73,7 +73,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         </div>
 
         <div className="flex flex-col gap-2 w-full">
-          <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
+          <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
             <span className="font-medium text-primary">Text align</span>
           </label>
           <Tabs
@@ -97,7 +97,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         </div>
 
         <div className="flex flex-col items-center gap-2 w-full">
-          <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
+          <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
             <span className="font-medium text-primary">
               Type your text to preview
             </span>
@@ -112,7 +112,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         </div>
 
         <div className="flex flex-col items-center gap-2 w-full">
-          <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
+          <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
             <span className="font-medium text-primary">Font size</span>
             <span className="text-muted-foreground">{fontSize}px</span>
           </label>
@@ -126,7 +126,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         </div>
 
         <div className="flex flex-col items-center gap-2 w-full">
-          <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
+          <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
             <span className="font-medium text-primary">Line height</span>
             <span className="text-muted-foreground">{lineHeight}</span>
           </label>
@@ -140,7 +140,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         </div>
 
         <div className="flex flex-col items-center gap-2 w-full">
-          <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
+          <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
             <span className="font-medium text-primary">Letter spacing</span>
             <span className="text-muted-foreground">{letterSpacing}</span>
           </label>

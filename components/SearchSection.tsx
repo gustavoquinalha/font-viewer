@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Input } from "./ui/input";
+import { Search } from "lucide-react";
 
 interface SearchSectionProps {
   loading: boolean;
@@ -43,20 +44,25 @@ const SearchSection: React.FC<SearchSectionProps> = ({
         { disabled: loading || error || activeTab === "selected-fonts" }
       )}
     >
-      <div className="flex gap-2 w-full max-w-full md:max-w-64">
+      <div className="flex gap-2 w-full max-w-full md:max-w-64 relative">
         <Input
           type="text"
+          className="pr-8"
           placeholder="Search fonts..."
           value={searchTerm}
           onChange={handleSearchChange}
         />
+        <div className="absolute top-2 right-2 font-medium">
+          <Search className="w-5 h-5" />
+        </div>
       </div>
 
       <Select onValueChange={handleSelectedFontStyleChange}>
-        <SelectTrigger className="w-full max-w-full md:max-w-32">
+        <SelectTrigger className="w-full max-w-full md:max-w-44 relative pl-20">
           <SelectValue
             placeholder={`${selectedFontStyle || "Select font style"}`}
           />
+          <div className="absolute top-2 left-2 font-medium">Font style</div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
@@ -72,12 +78,13 @@ const SearchSection: React.FC<SearchSectionProps> = ({
       </Select>
 
       <Select onValueChange={handleToggleSortOrder}>
-        <SelectTrigger className="w-full max-w-full md:max-w-24">
+        <SelectTrigger className="w-full max-w-full md:max-w-36 relative pl-14">
           <SelectValue
             placeholder={`${
               sortOrder === "asc" ? "A-z" : "Z-a" || "Select order"
             }`}
           />
+          <div className="absolute top-2 left-2 font-medium">Order</div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

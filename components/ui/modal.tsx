@@ -144,9 +144,9 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
             </div>
 
             <div className="flex gap-1 items-baseline">
-              <div className="text-xs text-primary">{data.family}</div>
-              <div className="text-xs text-primary">/ {data.fullName} /</div>
-              <div className="text-xs text-primary uppercase">{data.style}</div>
+              <div className="text-base text-primary">{data.family}</div>
+              <div className="text-base text-primary">/ {data.fullName} /</div>
+              <div className="text-base text-primary uppercase">{data.style}</div>
             </div>
 
             <div className="flex py-8 flex-col gap-8">
@@ -175,7 +175,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
               </div>
 
               <div
-                className="w-full text-xs text-primary/50 leading-none"
+                className="w-full text-base text-primary/50 leading-none"
                 style={{
                   fontFamily: data.family,
                 }}

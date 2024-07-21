@@ -206,8 +206,8 @@ const FontList: React.FC = () => {
       />
 
       {error ? (
-        <div className="text-center flex items-center justify-center flex-col gap-4 text-sm p-8 text-primary">
-          <p className="text-xs">{error}</p>
+        <div className="text-center flex items-center justify-center flex-col gap-4 text-base p-8 text-primary">
+          <p className="text-base">{error}</p>
           <div className="">
             <Button onClick={fetchFonts}>Load fonts</Button>
           </div>

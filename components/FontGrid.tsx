@@ -56,7 +56,7 @@ const FontGrid: React.FC<FontGridProps> = ({
             />
           </div>
 
-          <div className="text-xs text-primary/60 w-full uppercase">
+          <div className="text-base text-primary/60 w-full uppercase">
             {font.style}
           </div>
 
@@ -86,7 +86,7 @@ const FontGrid: React.FC<FontGridProps> = ({
 
           <div
             onClick={() => handleToggleModal(true, font)}
-            className="cursor-pointer text-xs text-primary/60 w-full"
+            className="cursor-pointer text-base text-primary/60 w-full"
           >
             {font.fullName}
           </div>
