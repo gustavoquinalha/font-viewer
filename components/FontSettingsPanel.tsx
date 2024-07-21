@@ -53,22 +53,20 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col gap-2 w-full">
           <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary">Text align</span>
+            <span className="font-medium text-primary">List type</span>
           </label>
           <Tabs
-            value={textAlign}
-            onValueChange={(value) => handleTextAlignChange(value)}
-            defaultValue="left"
+            value={listMode}
+            onValueChange={(value) => handleListModeChange(value)}
+            defaultValue="grid"
+            className="w-full"
           >
-            <TabsList>
-              <TabsTrigger value="left">
-                <AlignLeft />
+            <TabsList className="w-full">
+              <TabsTrigger value="grid" className="w-full">
+                <Grid2X2 className="w-5 h-5" />
               </TabsTrigger>
-              <TabsTrigger value="center">
-                <AlignCenter />
-              </TabsTrigger>
-              <TabsTrigger value="right">
-                <AlignRight />
+              <TabsTrigger value="list" className="w-full">
+                <Rows3 className="w-5 h-5" />
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -76,19 +74,23 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col gap-2 w-full">
           <label className="text-sm text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary">List type</span>
+            <span className="font-medium text-primary">Text align</span>
           </label>
           <Tabs
-            value={listMode}
-            onValueChange={(value) => handleListModeChange(value)}
-            defaultValue="grid"
+            value={textAlign}
+            onValueChange={(value) => handleTextAlignChange(value)}
+            defaultValue="left"
+            className="w-full"
           >
-            <TabsList>
-              <TabsTrigger value="grid">
-                <Grid2X2 />
+            <TabsList className="w-full">
+              <TabsTrigger value="left" className="w-full">
+                <AlignLeft className="w-5 h-5" />
               </TabsTrigger>
-              <TabsTrigger value="list">
-                <Rows3 />
+              <TabsTrigger value="center" className="w-full">
+                <AlignCenter className="w-5 h-5" />
+              </TabsTrigger>
+              <TabsTrigger value="right" className="w-full">
+                <AlignRight className="w-5 h-5" />
               </TabsTrigger>
             </TabsList>
           </Tabs>

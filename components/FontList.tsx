@@ -1,28 +1,13 @@
 "use client";
 
-import { ModeToggle } from "@/components/mode-toggle";
 import React, { useEffect, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "./ui/input";
-import { Slider } from "./ui/slider";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
-import { Checkbox } from "./ui/checkbox";
 import Modal from "./ui/modal";
 import { LoaderCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 import FontGrid from "./FontGrid";
 import Pagination from "./Pagination";
 import FontSettingsPanel from "./FontSettingsPanel";
+import Header from "./Header";
 
 const FontList: React.FC = () => {
   let currentFonts: any[] = [];
@@ -210,87 +195,21 @@ const FontList: React.FC = () => {
 
   return (
     <div className="w-full mx-auto">
-      <div className="h-auto md:h-14 flex flex-col md:flex-row gap-4 justify-between items-center py-2 px-4 w-full mx-auto sticky top-0 left-0 bg-background/90 border-b border-border backdrop-blur-sm z-50">
-        <div className="flex items-center gap-2">
-          <div className="text-primary font-medium whitespace-nowrap text-sm md:text-base">
-            Font Viewer
-          </div>
-          <ModeToggle />
-        </div>
-
-        <div
-          className={cn(
-            "flex flex-col md:flex-row gap-2 w-full items-center justify-center",
-            { disabled: loading || error || activeTab === "selected-fonts" }
-          )}
-        >
-          <div className="flex gap-2 w-full max-w-full md:max-w-64">
-            <Input
-              type="text"
-              placeholder="Search fonts..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-          </div>
-
-          <Select onValueChange={handleSelectedFontStyleChange}>
-            <SelectTrigger className="w-full max-w-full md:max-w-32">
-              <SelectValue
-                placeholder={`${selectedFontStyle || "Select font style"}`}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Font Style</SelectLabel>
-                <SelectItem value="All">All</SelectItem>{" "}
-                {fontStyleOptions.map((option, index) => (
-                  <SelectItem key={index} value={option.toLowerCase()}>
-                    {option}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          <Select onValueChange={handleToggleSortOrder}>
-            <SelectTrigger className="w-full max-w-full md:max-w-24">
-              <SelectValue
-                placeholder={`${
-                  sortOrder === "asc" ? "A-z" : "Z-a" || "Select order"
-                }`}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Order</SelectLabel>
-                <SelectItem value={"asc"}>A-z</SelectItem>
-                <SelectItem value={"desc"}>Z-a</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div
-          className={cn("flex items-center gap-4", {
-            disabled: loading || error,
-          })}
-        >
-          <Tabs
-            value={activeTab}
-            onValueChange={(value) => handleToggleActiveTab(value)}
-            defaultValue="all-fonts"
-          >
-            <TabsList>
-              <TabsTrigger value="all-fonts">
-                All fonts ({filteredFonts.length})
-              </TabsTrigger>
-              <TabsTrigger value="selected-fonts">
-                Seleted fonts ({filteredFontsSelected.length})
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
-      </div>
+      <Header
+        loading={loading}
+        error={error}
+        activeTab={activeTab}
+        handleToggleActiveTab={handleToggleActiveTab}
+        searchTerm={searchTerm}
+        handleSearchChange={handleSearchChange}
+        handleSelectedFontStyleChange={handleSelectedFontStyleChange}
+        fontStyleOptions={fontStyleOptions}
+        selectedFontStyle={selectedFontStyle}
+        handleToggleSortOrder={handleToggleSortOrder}
+        sortOrder={sortOrder}
+        filteredFonts={filteredFonts}
+        filteredFontsSelected={filteredFontsSelected}
+      />
 
       {error ? (
         <div className="text-center flex items-center justify-center flex-col gap-4 text-sm p-8 text-primary">
