@@ -67,3 +67,6 @@
     @apply bg-background text-foreground;
   }
 }
+.disabled {
+  @apply opacity-50 pointer-events-none;
+}

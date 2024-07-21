@@ -1,4 +1,4 @@
-import FontList from "@/components/font-list";
+import FontList from "@/components/FontList";
 
 export default function Home() {
   return <FontList />;

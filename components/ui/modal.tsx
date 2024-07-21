@@ -1,18 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "./button";
 
-interface FontMetadata {
-  family: string;
-  fullName?: string;
-  postScriptName?: string;
-  style?: string;
-  weight?: number;
-  stretch?: string;
-  unicodeRanges?: string[];
-  variantAxes?: string[];
-  version?: string;
-}
-
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
