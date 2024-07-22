@@ -19,7 +19,7 @@ const FontList: React.FC = () => {
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [previewText, setPreviewText] = useState<string>(
-    "Whereas disregard and contempt for human rights have resulted"
+    "Whereas disregard and contempt for human rights have resulted."
   );
   const [fontSize, setFontSize] = useState<number[]>([40]);
   const [lineHeight, setLineHeight] = useState<number[]>([1.3]);
@@ -34,7 +34,7 @@ const FontList: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("all-fonts");
   const [switchChecked, setSwitchChecked] = useState<string>("grid");
   const [textAlign, setTextAlign] = useState<"left" | "center" | "right">(
-    "left"
+    "center"
   );
 
   const fetchFonts = async () => {
@@ -121,7 +121,8 @@ const FontList: React.FC = () => {
     setSortOrder(value);
   };
 
-  const handleToggleModal = (value: any, data: any) => {
+  const handleToggleModal = (event: any, value: any, data: any) => {
+    event.preventDefault();
     setIsModalOpen(value);
     setModalData(data);
   };
@@ -233,6 +234,7 @@ const FontList: React.FC = () => {
                 handleListModeChange={handleSwitchCheckedChange}
                 textAlign={textAlign}
                 handleTextAlignChange={handleTextAlignChange}
+                modalMode={false}
               />
 
               {currentFonts.length ? (

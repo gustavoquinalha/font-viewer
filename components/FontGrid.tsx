@@ -1,6 +1,8 @@
 import React from "react";
-import { Checkbox } from "./ui/checkbox";
 import { cn } from "@/lib/utils";
+import { EyeIcon } from "lucide-react";
+import { Checkbox } from "./ui/checkbox";
+import { Badge } from "./ui/badge";
 
 interface FontMetadata {
   family: string;
@@ -20,7 +22,7 @@ interface FontGridProps {
   previewText: string;
   filteredFontsSelected: FontMetadata[];
   handleFontSelection: (font: FontMetadata) => void;
-  handleToggleModal: (open: boolean, font: FontMetadata) => void;
+  handleToggleModal: (event: any, open: boolean, font: FontMetadata) => void;
   activeTab: string;
 }
 
@@ -49,7 +51,7 @@ const FontGrid: React.FC<FontGridProps> = ({
       {currentFonts.slice(startIndex, endIndex).map((font, index) => (
         <div
           className={cn(
-            "relative group rounded flex flex-col gap-2 bg-secondary/30 hover:bg-secondary dark:hover:bg-secondary/80 border border-input text-primary overflow-hidden px-8 py-10",
+            "relative group rounded flex flex-col gap-1 bg-secondary/30 hover:bg-secondary dark:hover:bg-secondary/80 border border-input text-primary overflow-hidden px-8 py-10",
             {
               "border-foreground":
                 filteredFontsSelected.includes(font) &&
@@ -58,22 +60,33 @@ const FontGrid: React.FC<FontGridProps> = ({
           )}
           key={index}
         >
-          <div className="absolute top-4 right-4">
-            <Checkbox
-              onCheckedChange={() => handleFontSelection(font)}
-              checked={filteredFontsSelected.includes(font)}
-            />
-          </div>
-
-          <div className="text-base text-primary/60 w-full uppercase">
-            {font.style}
+          <div className="w-full flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex">
+                <Checkbox
+                  onCheckedChange={() => handleFontSelection(font)}
+                  checked={filteredFontsSelected.includes(font)}
+                />
+              </div>
+              <span className="text-base">
+                <Badge variant="secondary">{font.style}</Badge>
+              </span>
+            </div>
+            <span>
+              <EyeIcon
+                className="h-6 w-6 cursor-pointer opacity-50 hover:opacity-100"
+                onClick={() => handleToggleModal(event, true, font)}
+              />
+            </span>
           </div>
 
           <div
-            onClick={() => handleToggleModal(true, font)}
             className={cn(
-              "cursor-pointer w-full text-4xl text-primary leading-none py-6 whitespace-pre-wrap",
-              { "min-h-80": listMode === "grid" }
+              "w-full text-4xl text-primary leading-none py-6 whitespace-pre-wrap flex items-center",
+              { "min-h-80": listMode === "grid" },
+              { "text-center justify-center": textAlign === "center" },
+              { "text-left justify-start": textAlign === "left" },
+              { "text-right justify-end": textAlign === "right" }
             )}
             style={{
               fontFamily: font.family,
@@ -86,17 +99,9 @@ const FontGrid: React.FC<FontGridProps> = ({
             {previewText}
           </div>
 
-          <div
-            onClick={() => handleToggleModal(true, font)}
-            className="cursor-pointer text-base text-primary w-full"
-          >
-            {font.family}
-          </div>
+          <div className="text-base text-primary w-full">{font.family}</div>
 
-          <div
-            onClick={() => handleToggleModal(true, font)}
-            className="cursor-pointer text-base text-primary/60 w-full"
-          >
+          <div className=" text-base text-primary/60 w-full">
             {font.fullName}
           </div>
         </div>
