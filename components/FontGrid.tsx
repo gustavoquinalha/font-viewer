@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { EyeIcon } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { Badge } from "./ui/badge";
+import RandomShape from "./RandomShape";
 
 interface FontGridProps {
   listMode: string;
@@ -38,7 +39,7 @@ const FontGrid: React.FC<FontGridProps> = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 w-full",
+        "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 w-full",
         { "!grid-cols-1": listMode === "list" }
       )}
     >
@@ -48,7 +49,7 @@ const FontGrid: React.FC<FontGridProps> = ({
             <div className="">
               <div
                 className={cn(
-                  "h-6 absolute -bottom-2 group-hover:-bottom-4 -scale-x-90 transition-all rounded bg-primary-foreground group-hover:bg-secondary dark:group-hover:bg-secondary/80 border border-input w-full -z-10",
+                  "h-6 absolute -bottom-2 group-hover:-bottom-3 -scale-x-90 transition-all rounded bg-primary-foreground group-hover:bg-secondary border border-input w-full -z-10",
                   {
                     "border-foreground":
                       filteredFontsSelected.includes(font) &&
@@ -59,7 +60,7 @@ const FontGrid: React.FC<FontGridProps> = ({
               {font.fonts.length > 3 ? (
                 <div
                   className={cn(
-                    "h-6 absolute -bottom-1 group-hover:-bottom-1.5 -scale-x-95 transition-all rounded bg-primary-foreground group-hover:bg-secondary dark:group-hover:bg-secondary/80 border border-input w-full -z-10",
+                    "h-6 absolute -bottom-1 -scale-x-95 transition-all rounded bg-primary-foreground group-hover:bg-secondary border border-input w-full -z-10",
                     {
                       "border-foreground":
                         filteredFontsSelected.includes(font) &&
@@ -76,7 +77,7 @@ const FontGrid: React.FC<FontGridProps> = ({
           )}
           <div
             className={cn(
-              "relative h-full group-hover:-translate-y-1 transition-all rounded flex flex-col gap-1 bg-primary-foreground group-hover:bg-secondary dark:group-hover:bg-secondary/80 border border-input text-primary overflow-hidden px-8 py-10 z-10",
+              "relative h-full group-hover:-translate-y-1 transition-all rounded flex flex-col gap-1 bg-primary-foreground group-hover:bg-secondary border border-input text-primary overflow-hidden px-8 py-10 z-50",
               {
                 "border-foreground":
                   filteredFontsSelected.includes(font) &&
@@ -84,8 +85,12 @@ const FontGrid: React.FC<FontGridProps> = ({
               }
             )}
           >
+            {/* <div className="absolute inset-0 -z-10 flex justify-center items-center text-center">
+              <RandomShape fill={"current"} className=" fill-primary/10" />
+            </div> */}
+
             <div className="w-full flex items-center justify-between">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center gap-4">
                 <div className="flex">
                   <Checkbox
                     onCheckedChange={() => handleFontSelection(font)}

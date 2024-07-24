@@ -10,6 +10,15 @@ import {
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface FontSettingsPanelProps {
   previewText: string;
@@ -25,6 +34,9 @@ interface FontSettingsPanelProps {
   textAlign: string;
   handleTextAlignChange: (checked: string) => void;
   modalMode: boolean;
+  styles?: string[];
+  handleSelectedFontStyleChange: (value: string) => void;
+  selectedFontStyle: string | null;
 }
 
 const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
@@ -41,13 +53,16 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
   textAlign,
   handleTextAlignChange,
   modalMode,
+  styles,
+  handleSelectedFontStyleChange,
+  selectedFontStyle,
 }) => {
   return (
     <div
       className={cn(
         "w-full",
         {
-          "md:max-w-72 !w-72 p-4 pb-8 md:sticky top-14 left-0 overflow-hidden z-10 h-auto md:h-[calc(100vh-56px)] overflow-y-auto":
+          "md:max-w-72 !w-72 p-5 pb-8 md:sticky top-14 left-0 overflow-hidden z-10 h-auto md:h-[calc(100vh-56px)] overflow-y-auto":
             !modalMode,
         },
         { "border-t px-4 py-5 bg-primary-foreground": modalMode }
@@ -81,7 +96,9 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         {!modalMode ? (
           <div className="flex flex-col gap-2 w-full">
             <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-              <span className="font-medium text-primary font-sans">List type</span>
+              <span className="font-medium text-primary font-sans">
+                List type
+              </span>
             </label>
             <Tabs
               value={listMode}
@@ -106,7 +123,9 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         <div className="flex flex-col gap-2 w-full">
           {!modalMode ? (
             <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-              <span className="font-medium text-primary font-sans">Text align</span>
+              <span className="font-medium text-primary font-sans">
+                Text align
+              </span>
             </label>
           ) : (
             ""
@@ -151,10 +170,40 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
           ""
         )}
 
+        {modalMode ? (
+          <div className="flex flex-col items-center gap-2 w-full relative">
+            <Select onValueChange={handleSelectedFontStyleChange}>
+              <SelectTrigger className="w-full max-w-full font-sans">
+                <SelectValue
+                  className="w-full"
+                  placeholder={`${selectedFontStyle || "Select font style"}`}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Style</SelectLabel>
+                  <SelectItem value="All">All</SelectItem>
+                  {styles?.map((style, index) => (
+                    <SelectItem key={index} value={style.toLowerCase()}>
+                      {style}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        ) : (
+          ""
+        )}
+
         <div className="flex flex-col items-center gap-2 w-full">
           <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary font-sans">Font size</span>
-            <span className="text-muted-foreground font-sans">{fontSize}px</span>
+            <span className="font-medium text-primary font-sans">
+              Font size
+            </span>
+            <span className="text-muted-foreground font-sans">
+              {fontSize}px
+            </span>
           </label>
           <Slider
             defaultValue={[fontSize]}
@@ -167,8 +216,12 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col items-center gap-2 w-full">
           <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary font-sans">Line height</span>
-            <span className="text-muted-foreground font-sans">{lineHeight}</span>
+            <span className="font-medium text-primary font-sans">
+              Line height
+            </span>
+            <span className="text-muted-foreground font-sans">
+              {lineHeight}
+            </span>
           </label>
           <Slider
             defaultValue={[lineHeight]}
@@ -181,8 +234,12 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col items-center gap-2 w-full">
           <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary font-sans">Letter spacing</span>
-            <span className="text-muted-foreground font-sans">{letterSpacing}</span>
+            <span className="font-medium text-primary font-sans">
+              Letter spacing
+            </span>
+            <span className="text-muted-foreground font-sans">
+              {letterSpacing}
+            </span>
           </label>
           <Slider
             defaultValue={[letterSpacing]}

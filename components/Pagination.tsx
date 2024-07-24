@@ -28,7 +28,7 @@ const Pagination: React.FC<PaginationControlsProps> = ({
   totalPages,
 }) => {
   return (
-    <div className="flex gap-1 justify-center items-center">
+    <div className="flex gap-1 justify-center items-center mt-2">
       <Button variant="outline" onClick={prevPage} disabled={currentPage === 1}>
         <ArrowLeft className="mr-2 h-4 w-4" />
         Previous

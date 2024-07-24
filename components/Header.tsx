@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({
   filteredFontsSelected,
 }) => {
   return (
-    <div className="h-auto md:h-14 flex flex-col md:flex-row gap-2 justify-between items-center p-4 w-full mx-auto sticky top-0 left-0 bg-background/90 border-b border-border backdrop-blur-sm z-50">
+    <div className="h-auto md:h-14 flex flex-col md:flex-row gap-2 justify-between items-center p-4 w-full mx-auto sticky top-0 left-0 bg-background/90 border-b border-border backdrop-blur-sm z-[100]">
       <div className="flex items-center gap-2">
         <div className="text-primary font-medium whitespace-nowrap text-base md:text-lg">
           Font Viewer

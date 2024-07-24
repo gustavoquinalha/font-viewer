@@ -16,10 +16,21 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  data?: FontMetadata | null;
+  data?: GroupedFont;
+  styles?: string[];
+  selectedFontStyle: string | null;
+  handleSelectedFontStyleChange: (value: string) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
+const Modal: React.FC<ModalProps> = ({
+  isOpen,
+  onClose,
+  children,
+  data,
+  styles,
+  selectedFontStyle,
+  handleSelectedFontStyleChange,
+}) => {
   const [previewText, setPreviewText] = useState<string>(
     "Whereas disregard and contempt for human rights have resulted."
   );
@@ -251,8 +262,16 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
     Array.from(event.currentTarget.childNodes).forEach(sanitizeNode);
   };
 
+  // styles = data?.fonts;
+  const teste: string[] | null = [];
+  data?.fonts.forEach((element) => {
+    teste.push(element.style || "teste");
+  });
+
+  console.log("teste", teste);
+
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-background/80 w-full z-50 backdrop-blur">
+    <div className="fixed inset-0 flex items-center justify-center bg-background/80 w-full z-[110] backdrop-blur">
       <div className="bg-background border border-border rounded-lg shadow-lg p-8 py-10 w-screen h-screen flex relative overflow-auto">
         <div className="fixed top-10 right-10">
           <X
@@ -268,18 +287,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
             }}
           >
             <div className="w-full p-4">
-              <div className="mb-8 flex flex-col items-center justify-center text-center gap-2 w-full max-w-screen-lg mx-auto">
-                <div className="flex gap-2 items-center">
-                  <div className="text-lg text-primary/50 font-sans">
-                    {data.family}
-                  </div>
-                  <Badge variant="secondary" className="font-sans">
-                    {data.style}
-                  </Badge>
+              <div className="mb-8 flex flex-col items-center justify-center text-center gap-4 w-full max-w-screen-lg mx-auto">
+                <div className="text-7xl font-bold text-primary">
+                  {data.family}
                 </div>
 
-                <div className="text-6xl text-primary font-bold">
-                  {data.fullName}
+                <div className="text-base flex flex-wrap justify-center items-center gap-1 font-sans w-full max-w-2xl mx-auto">
+                  {data.fonts.map((item, index) => (
+                    <Badge
+                      key={index}
+                      variant="secondary"
+                      className="text-xs group-hover:bg-muted-foreground/10"
+                    >
+                      {item.style}
+                    </Badge>
+                  ))}
                 </div>
               </div>
 
@@ -320,6 +342,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                     textAlign={textAlign}
                     handleTextAlignChange={handleTextAlignChange}
                     modalMode={true}
+                    styles={teste}
+                    selectedFontStyle={selectedFontStyle}
+                    handleSelectedFontStyleChange={
+                      handleSelectedFontStyleChange
+                    }
                   />
                 </div>
 
@@ -348,7 +375,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                     contentEditable={true}
                     onInput={sanitizeContent}
                     suppressContentEditableWarning={true}
-                    className="text-base text-primary/50 tracking-normal"
+                    className="text-base text-primary tracking-normal"
                     style={{ lineHeight: 1.5 }}
                   >
                     {text3}

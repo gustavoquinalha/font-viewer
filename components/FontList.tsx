@@ -30,13 +30,14 @@ const FontList: React.FC = () => {
   >([]);
   const itemsPerPage = 12;
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalData, setModalData] = useState<FontMetadata | null>(null);
+  const [modalData, setModalData] = useState<GroupedFont>();
   const [activeTab, setActiveTab] = useState<string>("all-fonts");
   const [switchChecked, setSwitchChecked] = useState<string>("grid");
   const [textAlign, setTextAlign] = useState<"left" | "center" | "right">(
     "center"
   );
   const [fontStyleOptions, setFontStyleOptions] = useState<string[]>([]);
+  const [styleSelected, setStyleSelected] = useState<string>("All");
 
   const groupFontsByFamily = (fonts: FontMetadata[]): GroupedFont[] => {
     return fonts.reduce((acc: GroupedFont[], font) => {
@@ -182,6 +183,12 @@ const FontList: React.FC = () => {
     setCurrentPage(1);
   };
 
+  const handleStyleChange = (event: string) => {
+    console.log("handleStyleChange", event);
+
+    setStyleSelected(event);
+  };
+
   const handleFontSelection = (font: FontMetadata) => {
     setFilteredFontsSelected((prevSelected) => {
       if (prevSelected.includes(font)) {
@@ -272,10 +279,13 @@ const FontList: React.FC = () => {
                 textAlign={textAlign}
                 handleTextAlignChange={handleTextAlignChange}
                 modalMode={false}
+                styles={fontStyleOptions}
+                selectedFontStyle={selectedFontStyle}
+                handleSelectedFontStyleChange={handleSelectedFontStyleChange}
               />
 
               {currentFonts.length ? (
-                <div className="flex flex-col w-full gap-4 p-4">
+                <div className="flex flex-col w-full gap-5 p-5 pb-10">
                   <FontGrid
                     listMode={switchChecked}
                     currentFonts={currentFonts}
@@ -315,6 +325,9 @@ const FontList: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         data={modalData}
+        styles={fontStyleOptions}
+        selectedFontStyle={selectedFontStyle}
+        handleSelectedFontStyleChange={handleSelectedFontStyleChange}
       >
         <div></div>
       </Modal>
