@@ -75,6 +75,7 @@ export default function RootLayout({
         <meta name="twitter:image:alt" content="Font Viewer logo" />
       </head>
       <body
+        suppressHydrationWarning={true}
         className={cn(
           "min-h-screen bg-background text-foreground font-sans text-base antialiased overflow-y-scroll overflow-x-hidden",
           fontSans.variable

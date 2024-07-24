@@ -69,7 +69,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
             <h1 className="text-lg text-primary font-medium">
               Explore your installed fonts with ease.
             </h1>
-            <h2 className="text-base text-muted-foreground font-normal">
+            <h2 className="text-base text-muted-foreground font-sans font-normal">
               Discover and visualize a variety of styles directly in your
               browser.
             </h2>
@@ -81,7 +81,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         {!modalMode ? (
           <div className="flex flex-col gap-2 w-full">
             <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-              <span className="font-medium text-primary">List type</span>
+              <span className="font-medium text-primary font-sans">List type</span>
             </label>
             <Tabs
               value={listMode}
@@ -106,7 +106,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         <div className="flex flex-col gap-2 w-full">
           {!modalMode ? (
             <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-              <span className="font-medium text-primary">Text align</span>
+              <span className="font-medium text-primary font-sans">Text align</span>
             </label>
           ) : (
             ""
@@ -135,7 +135,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
         {!modalMode ? (
           <div className="flex flex-col items-center gap-2 w-full">
             <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-              <span className="font-medium text-primary">
+              <span className="font-medium text-primary font-sans">
                 Type your text to preview
               </span>
             </label>
@@ -153,8 +153,8 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col items-center gap-2 w-full">
           <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary">Font size</span>
-            <span className="text-muted-foreground">{fontSize}px</span>
+            <span className="font-medium text-primary font-sans">Font size</span>
+            <span className="text-muted-foreground font-sans">{fontSize}px</span>
           </label>
           <Slider
             defaultValue={[fontSize]}
@@ -167,8 +167,8 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col items-center gap-2 w-full">
           <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary">Line height</span>
-            <span className="text-muted-foreground">{lineHeight}</span>
+            <span className="font-medium text-primary font-sans">Line height</span>
+            <span className="text-muted-foreground font-sans">{lineHeight}</span>
           </label>
           <Slider
             defaultValue={[lineHeight]}
@@ -181,8 +181,8 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         <div className="flex flex-col items-center gap-2 w-full">
           <label className="text-base text-primary flex items-center justify-between gap-2 w-full">
-            <span className="font-medium text-primary">Letter spacing</span>
-            <span className="text-muted-foreground">{letterSpacing}</span>
+            <span className="font-medium text-primary font-sans">Letter spacing</span>
+            <span className="text-muted-foreground font-sans">{letterSpacing}</span>
           </label>
           <Slider
             defaultValue={[letterSpacing]}
@@ -195,7 +195,7 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
 
         {!modalMode ? (
           <div className="">
-            <span className="text-muted-foreground">
+            <span className="text-muted-foreground font-sans">
               This is an open source project,{" "}
               <a
                 className="hover:underline hover:text-primary"

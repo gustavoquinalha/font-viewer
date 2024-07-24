@@ -12,8 +12,8 @@ import Header from "./Header";
 const FontList: React.FC = () => {
   let currentFonts: any[] = [];
   const [loading, setLoading] = useState<boolean>(true);
-  const [imutableFonts, setImutableFonts] = useState<FontMetadata[]>([]);
-  const [filteredFonts, setFilteredFonts] = useState<FontMetadata[]>([]);
+  const [imutableFonts, setImutableFonts] = useState<GroupedFont[]>([]);
+  const [filteredFonts, setFilteredFonts] = useState<GroupedFont[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -36,6 +36,34 @@ const FontList: React.FC = () => {
   const [textAlign, setTextAlign] = useState<"left" | "center" | "right">(
     "center"
   );
+  const [fontStyleOptions, setFontStyleOptions] = useState<string[]>([]);
+
+  const groupFontsByFamily = (fonts: FontMetadata[]): GroupedFont[] => {
+    return fonts.reduce((acc: GroupedFont[], font) => {
+      const existingGroup = acc.find((group) => group.family === font.family);
+
+      if (existingGroup) {
+        existingGroup.fonts.push({
+          postScriptName: font.postScriptName,
+          fullName: font.fullName,
+          style: font.style,
+        });
+      } else {
+        acc.push({
+          family: font.family,
+          fonts: [
+            {
+              postScriptName: font.postScriptName,
+              fullName: font.fullName,
+              style: font.style,
+            },
+          ],
+        });
+      }
+
+      return acc;
+    }, []);
+  };
 
   const fetchFonts = async () => {
     setLoading(true);
@@ -43,7 +71,10 @@ const FontList: React.FC = () => {
     try {
       if (window.queryLocalFonts) {
         const fontAccess: FontMetadata[] = await window.queryLocalFonts();
-        setImutableFonts(fontAccess);
+        const groupedFonts = groupFontsByFamily(fontAccess);
+        console.log("groupedFonts", groupedFonts);
+
+        setImutableFonts(groupedFonts);
         setLoading(false);
       } else {
         setError("Font access not supported or permission denied");
@@ -60,17 +91,26 @@ const FontList: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = imutableFonts.filter((font) => {
-      const matchesSearchTerm = font.fullName
-        ?.toLowerCase()
-        .includes(searchTerm.toLowerCase());
+    const filtered = imutableFonts
+      .map((group) => {
+        const filteredFontsInGroup = group.fonts.filter((font) => {
+          const matchesSearchTerm = font.fullName
+            ?.toLowerCase()
+            .includes(searchTerm.toLowerCase());
 
-      const matchesFontStyle =
-        selectedFontStyle === "All" ||
-        font.style?.toLowerCase() === selectedFontStyle.toLowerCase();
+          const matchesFontStyle =
+            selectedFontStyle === "All" ||
+            font.style?.toLowerCase() === selectedFontStyle.toLowerCase();
 
-      return matchesSearchTerm && matchesFontStyle;
-    });
+          return matchesSearchTerm && matchesFontStyle;
+        });
+
+        return {
+          family: group.family,
+          fonts: filteredFontsInGroup,
+        };
+      })
+      .filter((group) => group.fonts.length > 0);
 
     const sortedFonts = [...filtered].sort((a, b) => {
       if (sortOrder === "asc") {
@@ -82,6 +122,16 @@ const FontList: React.FC = () => {
 
     setFilteredFonts(sortedFonts);
   }, [searchTerm, sortOrder, selectedFontStyle, imutableFonts]);
+
+  useEffect(() => {
+    const styles = imutableFonts.flatMap((group) =>
+      group.fonts
+        .map((font) => font.style)
+        .filter((style) => style !== undefined)
+    );
+    const uniqueStyles = Array.from(new Set(styles));
+    setFontStyleOptions(uniqueStyles);
+  }, [imutableFonts]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -171,19 +221,6 @@ const FontList: React.FC = () => {
     { length: totalPages() },
     (_, index) => index + 1
   );
-
-  const fontStyleOptions = [
-    "Thin",
-    "Normal",
-    "Medium",
-    "Bold",
-    "Semi-Bold",
-    "SemiBold",
-    "Italic",
-    "Black",
-    "Extra-Black",
-    "ExtraBlack",
-  ];
 
   currentFonts =
     activeTab === "all-fonts" ? filteredFonts : filteredFontsSelected;

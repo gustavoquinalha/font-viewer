@@ -1,8 +1,16 @@
-import React, { useState } from "react";
-import { Button } from "./button";
+import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import FontSettingsPanel from "../FontSettingsPanel";
 import { cn } from "@/lib/utils";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./carousel";
+import { Badge } from "./badge";
+import RandomShape from "../RandomShape";
 
 interface ModalProps {
   isOpen: boolean;
@@ -25,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
 
   const generateAllCharacters = () => {
     const characters = [];
-    for (let i = 32; i <= 126; i++) {
+    for (let i = 33; i <= 126; i++) {
       characters.push(String.fromCharCode(i));
     }
 
@@ -108,10 +116,71 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
       "þ",
       "ÿ",
     ];
+
     characters.push(...additionalChars);
 
     return characters;
   };
+
+  const [selectedChar, setSelectedChar] = useState<string | null>("A");
+
+  const colorSchemes = [
+    {
+      background: "#103A00",
+      icon: "#FF2A00",
+      text: "#EDE463",
+    },
+    {
+      background: "#D2ED75",
+      icon: "#00C3FF",
+      text: "#5D0100",
+    },
+    {
+      background: "#FFD85B",
+      icon: "#00CA00",
+      text: "#003062",
+    },
+    {
+      background: "#004030",
+      icon: "#FF0000",
+      text: "#FFBBFF",
+    },
+    {
+      background: "#FF6E00",
+      icon: "#002B69",
+      text: "#B4F38D",
+    },
+    {
+      background: "#00A4FF",
+      icon: "#003F03",
+      text: "#8FFAA8",
+    },
+    {
+      background: "#FFB6F4",
+      icon: "#33256E",
+      text: "#FF2900",
+    },
+    {
+      background: "#1A256A",
+      icon: "#FF0000",
+      text: "#D2ED72",
+    },
+    {
+      background: "#FF0060",
+      icon: "#EAE462",
+      text: "#2B1D65",
+    },
+    {
+      background: "#002C69",
+      icon: "#EDE462",
+      text: "#FF2900",
+    },
+    {
+      background: "#003E02",
+      icon: "#4FFDDC",
+      text: "#5F7EFF",
+    },
+  ];
 
   const text1 =
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
@@ -119,6 +188,18 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
     "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.";
   const text3 =
     "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("!overflow-hidden");
+    } else {
+      document.body.classList.remove("!overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("!overflow-hidden");
+    };
+  }, [isOpen]);
 
   const handlePreviewTextChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -172,31 +253,41 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background/80 w-full z-50 backdrop-blur">
-      <div className="bg-background border border-border rounded-lg shadow-lg p-8 py-10 w-[90vw] h-[90vh] flex relative overflow-auto">
-        <div className="absolute top-4 right-4">
+      <div className="bg-background border border-border rounded-lg shadow-lg p-8 py-10 w-screen h-screen flex relative overflow-auto">
+        <div className="fixed top-10 right-10">
           <X
             className="w-5 h-5 cursor-pointer opacity-50 hover:opacity-100"
             onClick={onClose}
           />
         </div>
         {data ? (
-          <div className="w-full block md:flex flex-row max-w-screen-lg mx-auto">
+          <div
+            className="w-full block md:flex flex-row mx-auto"
+            style={{
+              fontFamily: data.family,
+            }}
+          >
             <div className="w-full p-4">
-              <div className="flex gap-1 items-baseline mb-2">
-                <div className="text-base text-primary">{data.family}</div>
-                <div className="text-base text-primary">
-                  / {data.fullName} /
+              <div className="mb-8 flex flex-col items-center justify-center text-center gap-2 w-full max-w-screen-lg mx-auto">
+                <div className="flex gap-2 items-center">
+                  <div className="text-lg text-primary/50 font-sans">
+                    {data.family}
+                  </div>
+                  <Badge variant="secondary" className="font-sans">
+                    {data.style}
+                  </Badge>
                 </div>
-                <div className="text-base text-primary uppercase">
-                  {data.style}
+
+                <div className="text-6xl text-primary font-bold">
+                  {data.fullName}
                 </div>
               </div>
 
-              <div className="flex pb-8 flex-col gap-10">
-                <div className="w-full flex flex-col gap-2 border border-input rounded overflow-hidden">
+              <div className="flex pb-20 flex-col gap-20">
+                <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-2 border border-input rounded">
                   <div
                     className={cn(
-                      "mb-10 w-full text-7xl text-primary leading-none min-h-[50vh] flex items-center mx-auto p-8",
+                      "w-full text-7xl text-primary leading-none min-h-[300px] flex items-center mx-auto p-8",
                       { "text-center justify-center": textAlign === "center" },
                       { "text-left justify-start": textAlign === "left" },
                       { "text-right justify-end": textAlign === "right" }
@@ -232,45 +323,86 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                   />
                 </div>
 
-                <h1
-                  contentEditable={true}
-                  onInput={sanitizeContent}
-                  suppressContentEditableWarning={true}
-                  className="text-5xl font-bold text-primary"
-                  style={{ lineHeight: 1.3 }}
-                >
-                  {text1}
-                </h1>
+                <div className="flex flex-col gap-6 w-full max-w-screen-lg mx-auto">
+                  <h1
+                    contentEditable={true}
+                    onInput={sanitizeContent}
+                    suppressContentEditableWarning={true}
+                    className="text-5xl font-bold text-primary tracking-wide"
+                    style={{ lineHeight: 1.3 }}
+                  >
+                    {text1}
+                  </h1>
 
-                <h2
-                  contentEditable={true}
-                  onInput={sanitizeContent}
-                  suppressContentEditableWarning={true}
-                  className="text-3xl font-normal text-primary/80"
-                  style={{ lineHeight: 1.3 }}
-                >
-                  {text2}
-                </h2>
+                  <h2
+                    contentEditable={true}
+                    onInput={sanitizeContent}
+                    suppressContentEditableWarning={true}
+                    className="text-2xl font-normal text-primary/80 tracking-normal"
+                    style={{ lineHeight: 1.3 }}
+                  >
+                    {text2}
+                  </h2>
 
-                <p
-                  contentEditable={true}
-                  onInput={sanitizeContent}
-                  suppressContentEditableWarning={true}
-                  className="text-base text-primary/50"
-                  style={{ lineHeight: 1.5 }}
-                >
-                  {text3}
-                </p>
+                  <p
+                    contentEditable={true}
+                    onInput={sanitizeContent}
+                    suppressContentEditableWarning={true}
+                    className="text-base text-primary/50 tracking-normal"
+                    style={{ lineHeight: 1.5 }}
+                  >
+                    {text3}
+                  </p>
+                </div>
 
-                <div className="w-full grid grid-cols-3 md:grid-cols-6 gap-2">
-                  {allCharacters.map((char, index) => (
-                    <div
-                      key={index}
-                      className="border p-4 text-2xl rounded hover:bg-secondary min-h-24 flex justify-center items-center text-center"
-                    >
-                      {char}
-                    </div>
-                  ))}
+                <div className="w-full">
+                  <Carousel className="w-full">
+                    <CarouselContent className="w-full -ml-0 gap-2">
+                      {colorSchemes.map((color, index) => (
+                        <CarouselItem
+                          key={index}
+                          className="p-4 select-none aspect-square pointer-events-none basis-1/3 rounded-sm border h-[70vh] flex justify-center items-center text-center text-5xl relative z-50 overflow-hidden"
+                          style={{
+                            background: color.background,
+                          }}
+                        >
+                          <RandomShape
+                            fill={color.icon}
+                            className="absolute -z-10"
+                          />
+                          <div
+                            className="text-[5rem] font-bold w-full max-w-96"
+                            style={{
+                              color: color.text,
+                            }}
+                          >
+                            <span className="whitespace-break-spaces break-all">
+                              ABCDEFGHIJKLMNOPQRSTUVXWYZ0123456789
+                            </span>
+                          </div>
+                        </CarouselItem>
+                      ))}
+                    </CarouselContent>
+                    <CarouselPrevious />
+                    <CarouselNext />
+                  </Carousel>
+                </div>
+
+                <div className="flex gap-4 relative w-full max-w-screen-lg mx-auto">
+                  <div className="w-[300px] min-w-[300px] h-[300px] aspect-square border sticky top-0 left-0 z-10 text-[10rem] leading-none overflow-hidden flex justify-center items-center text-center">
+                    <span>{selectedChar}</span>
+                  </div>
+                  <div className="w-full grid grid-cols-10 gap-1">
+                    {allCharacters.map((char, index) => (
+                      <div
+                        key={index}
+                        onMouseEnter={() => setSelectedChar(char)}
+                        className="card border hover:bg-secondary aspect-square flex text-xl justify-center items-center text-center"
+                      >
+                        {char}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

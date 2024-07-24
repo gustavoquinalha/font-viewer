@@ -8,7 +8,13 @@ interface FontMetadata {
     unicodeRanges?: string[];
     variantAxes?: string[];
     version?: string;
+    teste?: any;
 }
+
+interface GroupedFont {
+    family: string;
+    fonts: Omit<FontMetadata, "family">[];
+  }
 
 interface Window {
     queryLocalFonts(): Promise<FontMetadata[]>;
