@@ -17,23 +17,104 @@ interface ModalProps {
   onClose: () => void;
   children: React.ReactNode;
   data?: GroupedFont;
-  styles?: string[];
-  selectedFontStyle: string | null;
-  handleSelectedFontStyleChange: (value: string) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({
-  isOpen,
-  onClose,
-  children,
-  data,
-  styles,
-  selectedFontStyle,
-  handleSelectedFontStyleChange,
-}) => {
+const generateAllCharacters = () => {
+  const characters = [];
+  for (let i = 33; i <= 126; i++) {
+    characters.push(String.fromCharCode(i));
+  }
+
+  const additionalChars = [
+    "ç",
+    "ã",
+    "á",
+    "é",
+    "í",
+    "ó",
+    "ú",
+    "â",
+    "ê",
+    "î",
+    "ô",
+    "û",
+    "ä",
+    "ë",
+    "ï",
+    "ö",
+    "ü",
+    "À",
+    "Á",
+    "Â",
+    "Ã",
+    "Ä",
+    "Å",
+    "Æ",
+    "Ç",
+    "È",
+    "É",
+    "Ê",
+    "Ë",
+    "Ì",
+    "Í",
+    "Î",
+    "Ï",
+    "Ñ",
+    "Ò",
+    "Ó",
+    "Ô",
+    "Õ",
+    "Ö",
+    "Ø",
+    "Ù",
+    "Ú",
+    "Û",
+    "Ü",
+    "Ý",
+    "Þ",
+    "ß",
+    "à",
+    "á",
+    "â",
+    "ã",
+    "ä",
+    "å",
+    "æ",
+    "è",
+    "é",
+    "ê",
+    "ë",
+    "ì",
+    "í",
+    "î",
+    "ï",
+    "ð",
+    "ñ",
+    "ò",
+    "ó",
+    "ô",
+    "õ",
+    "ö",
+    "ø",
+    "ù",
+    "ú",
+    "û",
+    "ü",
+    "ý",
+    "þ",
+    "ÿ",
+  ];
+
+  characters.push(...additionalChars);
+
+  return characters;
+};
+
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
   const [previewText, setPreviewText] = useState<string>(
     "Whereas disregard and contempt for human rights have resulted."
   );
+  const [fontFamily, setFontFamily] = useState<string>("");
   const [fontSize, setFontSize] = useState<number[]>([40]);
   const [lineHeight, setLineHeight] = useState<number[]>([1.3]);
   const [letterSpacing, setLetterSpacing] = useState<number[]>([0]);
@@ -41,99 +122,11 @@ const Modal: React.FC<ModalProps> = ({
   const [textAlign, setTextAlign] = useState<"left" | "center" | "right">(
     "center"
   );
-
-  const generateAllCharacters = () => {
-    const characters = [];
-    for (let i = 33; i <= 126; i++) {
-      characters.push(String.fromCharCode(i));
-    }
-
-    const additionalChars = [
-      "ç",
-      "ã",
-      "á",
-      "é",
-      "í",
-      "ó",
-      "ú",
-      "â",
-      "ê",
-      "î",
-      "ô",
-      "û",
-      "ä",
-      "ë",
-      "ï",
-      "ö",
-      "ü",
-      "À",
-      "Á",
-      "Â",
-      "Ã",
-      "Ä",
-      "Å",
-      "Æ",
-      "Ç",
-      "È",
-      "É",
-      "Ê",
-      "Ë",
-      "Ì",
-      "Í",
-      "Î",
-      "Ï",
-      "Ñ",
-      "Ò",
-      "Ó",
-      "Ô",
-      "Õ",
-      "Ö",
-      "Ø",
-      "Ù",
-      "Ú",
-      "Û",
-      "Ü",
-      "Ý",
-      "Þ",
-      "ß",
-      "à",
-      "á",
-      "â",
-      "ã",
-      "ä",
-      "å",
-      "æ",
-      "è",
-      "é",
-      "ê",
-      "ë",
-      "ì",
-      "í",
-      "î",
-      "ï",
-      "ð",
-      "ñ",
-      "ò",
-      "ó",
-      "ô",
-      "õ",
-      "ö",
-      "ø",
-      "ù",
-      "ú",
-      "û",
-      "ü",
-      "ý",
-      "þ",
-      "ÿ",
-    ];
-
-    characters.push(...additionalChars);
-
-    return characters;
-  };
-
   const [selectedChar, setSelectedChar] = useState<string | null>("A");
+
+  useEffect(() => {
+    setFontFamily(data?.fonts[0]?.fullName || "");
+  }, [data?.fonts]);
 
   const colorSchemes = [
     {
@@ -240,35 +233,11 @@ const Modal: React.FC<ModalProps> = ({
     setTextAlign(event);
   };
 
-  if (!isOpen) return null;
-
-  const sanitizeContent = (event: React.SyntheticEvent<HTMLDivElement>) => {
-    const allowedTags = ["B", "I", "U", "STRONG", "EM"];
-    const sanitizeNode = (node: Node) => {
-      if (node.nodeType === 1) {
-        const element = node as Element;
-        if (!allowedTags.includes(element.tagName)) {
-          const textNode = document.createTextNode(element.textContent || "");
-          element.parentNode?.replaceChild(textNode, element);
-        } else {
-          Array.from(element.childNodes).forEach(sanitizeNode);
-        }
-      } else if (node.nodeType === 3) {
-      } else {
-        node.parentNode?.removeChild(node);
-      }
-    };
-
-    Array.from(event.currentTarget.childNodes).forEach(sanitizeNode);
+  const handleStylefont = (event: any) => {
+    setFontFamily(event);
   };
 
-  // styles = data?.fonts;
-  const teste: string[] | null = [];
-  data?.fonts.forEach((element) => {
-    teste.push(element.style || "teste");
-  });
-
-  console.log("teste", teste);
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-background/80 w-full z-[110] backdrop-blur">
@@ -283,7 +252,7 @@ const Modal: React.FC<ModalProps> = ({
           <div
             className="w-full block md:flex flex-row mx-auto"
             style={{
-              fontFamily: data.family,
+              fontFamily: `"${fontFamily}", "${data.family}"`,
             }}
           >
             <div className="w-full p-4">
@@ -296,8 +265,11 @@ const Modal: React.FC<ModalProps> = ({
                   {data.fonts.map((item, index) => (
                     <Badge
                       key={index}
-                      variant="secondary"
-                      className="text-xs group-hover:bg-muted-foreground/10"
+                      variant={
+                        fontFamily === item.fullName ? "default" : "secondary"
+                      }
+                      className="cursor-pointer text-xs group-hover:bg-muted-foreground/10"
+                      onClick={() => handleStylefont(item.fullName)}
                     >
                       {item.style}
                     </Badge>
@@ -315,15 +287,12 @@ const Modal: React.FC<ModalProps> = ({
                       { "text-right justify-end": textAlign === "right" }
                     )}
                     style={{
-                      fontFamily: data.family,
+                      fontFamily: `"${fontFamily}", "${data.family}"`,
                       fontSize: `${fontSize}px`,
                       lineHeight: lineHeight[0],
                       letterSpacing: `${letterSpacing}rem`,
                       textAlign: textAlign,
                     }}
-                    contentEditable={true}
-                    onInput={sanitizeContent}
-                    suppressContentEditableWarning={true}
                   >
                     {previewText}
                   </div>
@@ -342,39 +311,23 @@ const Modal: React.FC<ModalProps> = ({
                     textAlign={textAlign}
                     handleTextAlignChange={handleTextAlignChange}
                     modalMode={true}
-                    styles={teste}
-                    selectedFontStyle={selectedFontStyle}
-                    handleSelectedFontStyleChange={
-                      handleSelectedFontStyleChange
-                    }
                   />
                 </div>
 
                 <div className="flex flex-col gap-6 w-full max-w-screen-lg mx-auto">
                   <h1
-                    contentEditable={true}
-                    onInput={sanitizeContent}
-                    suppressContentEditableWarning={true}
                     className="text-5xl font-bold text-primary tracking-wide"
                     style={{ lineHeight: 1.3 }}
                   >
                     {text1}
                   </h1>
-
                   <h2
-                    contentEditable={true}
-                    onInput={sanitizeContent}
-                    suppressContentEditableWarning={true}
                     className="text-2xl font-normal text-primary/80 tracking-normal"
                     style={{ lineHeight: 1.3 }}
                   >
                     {text2}
                   </h2>
-
                   <p
-                    contentEditable={true}
-                    onInput={sanitizeContent}
-                    suppressContentEditableWarning={true}
                     className="text-base text-primary tracking-normal"
                     style={{ lineHeight: 1.5 }}
                   >

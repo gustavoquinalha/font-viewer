@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import { EyeIcon } from "lucide-react";
 import { Checkbox } from "./ui/checkbox";
 import { Badge } from "./ui/badge";
-import RandomShape from "./RandomShape";
 
 interface FontGridProps {
   listMode: string;
@@ -45,22 +44,14 @@ const FontGrid: React.FC<FontGridProps> = ({
     >
       {currentFonts.slice(startIndex, endIndex).map((font, index) => (
         <div className="relative group" key={index}>
-          {font.fonts.length > 2 ? (
-            <div className="">
-              <div
-                className={cn(
-                  "h-6 absolute -bottom-2 group-hover:-bottom-3 -scale-x-90 transition-all rounded bg-primary-foreground group-hover:bg-secondary border border-input w-full -z-10",
-                  {
-                    "border-foreground":
-                      filteredFontsSelected.includes(font) &&
-                      activeTab === "all-fonts",
-                  }
-                )}
-              ></div>
-              {font.fonts.length > 3 ? (
+          {font.fonts.length > 1 ? (
+            <div className="w-full">
+              {font.fonts.slice(0, 6).map((_fontName, index) => (
                 <div
+                  key={index}
+                  style={{ bottom: -index * 2, left: -index * 2, zIndex: -index - 1 }}
                   className={cn(
-                    "h-6 absolute -bottom-1 -scale-x-95 transition-all rounded bg-primary-foreground group-hover:bg-secondary border border-input w-full -z-10",
+                    "h-full absolute transition-all rounded bg-primary-foreground border border-input w-full",
                     {
                       "border-foreground":
                         filteredFontsSelected.includes(font) &&
@@ -68,16 +59,14 @@ const FontGrid: React.FC<FontGridProps> = ({
                     }
                   )}
                 ></div>
-              ) : (
-                ""
-              )}
+              ))}
             </div>
           ) : (
             ""
           )}
           <div
             className={cn(
-              "relative h-full group-hover:-translate-y-1 transition-all rounded flex flex-col gap-1 bg-primary-foreground group-hover:bg-secondary border border-input text-primary overflow-hidden px-8 py-10 z-50",
+              "relative h-full transition-all rounded flex flex-col gap-1 bg-primary-foreground group-hover:bg-secondary border border-input text-primary overflow-hidden px-8 py-10 z-50",
               {
                 "border-foreground":
                   filteredFontsSelected.includes(font) &&
@@ -112,14 +101,14 @@ const FontGrid: React.FC<FontGridProps> = ({
 
             <div
               className={cn(
-                "w-full text-4xl text-primary leading-none py-6 whitespace-pre-wrap flex items-center",
+                "w-full h-full text-4xl text-primary leading-none py-6 whitespace-pre-wrap flex items-center",
                 { "min-h-80": listMode === "grid" },
                 { "text-center justify-center": textAlign === "center" },
                 { "text-left justify-start": textAlign === "left" },
                 { "text-right justify-end": textAlign === "right" }
               )}
               style={{
-                fontFamily: font.family,
+                fontFamily: `"${font.family}"`,
                 fontSize: `${fontSize}px`,
                 lineHeight: lineHeight,
                 letterSpacing: `${letterSpacing}rem`,

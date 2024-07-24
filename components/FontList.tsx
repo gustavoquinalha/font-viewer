@@ -37,7 +37,6 @@ const FontList: React.FC = () => {
     "center"
   );
   const [fontStyleOptions, setFontStyleOptions] = useState<string[]>([]);
-  const [styleSelected, setStyleSelected] = useState<string>("All");
 
   const groupFontsByFamily = (fonts: FontMetadata[]): GroupedFont[] => {
     return fonts.reduce((acc: GroupedFont[], font) => {
@@ -73,8 +72,6 @@ const FontList: React.FC = () => {
       if (window.queryLocalFonts) {
         const fontAccess: FontMetadata[] = await window.queryLocalFonts();
         const groupedFonts = groupFontsByFamily(fontAccess);
-        console.log("groupedFonts", groupedFonts);
-
         setImutableFonts(groupedFonts);
         setLoading(false);
       } else {
@@ -183,12 +180,6 @@ const FontList: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleStyleChange = (event: string) => {
-    console.log("handleStyleChange", event);
-
-    setStyleSelected(event);
-  };
-
   const handleFontSelection = (font: FontMetadata) => {
     setFilteredFontsSelected((prevSelected) => {
       if (prevSelected.includes(font)) {
@@ -279,9 +270,6 @@ const FontList: React.FC = () => {
                 textAlign={textAlign}
                 handleTextAlignChange={handleTextAlignChange}
                 modalMode={false}
-                styles={fontStyleOptions}
-                selectedFontStyle={selectedFontStyle}
-                handleSelectedFontStyleChange={handleSelectedFontStyleChange}
               />
 
               {currentFonts.length ? (
@@ -325,9 +313,6 @@ const FontList: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         data={modalData}
-        styles={fontStyleOptions}
-        selectedFontStyle={selectedFontStyle}
-        handleSelectedFontStyleChange={handleSelectedFontStyleChange}
       >
         <div></div>
       </Modal>

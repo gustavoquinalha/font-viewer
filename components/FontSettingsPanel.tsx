@@ -10,15 +10,6 @@ import {
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { cn } from "@/lib/utils";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 
 interface FontSettingsPanelProps {
   previewText: string;
@@ -34,9 +25,6 @@ interface FontSettingsPanelProps {
   textAlign: string;
   handleTextAlignChange: (checked: string) => void;
   modalMode: boolean;
-  styles?: string[];
-  handleSelectedFontStyleChange: (value: string) => void;
-  selectedFontStyle: string | null;
 }
 
 const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
@@ -53,9 +41,6 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
   textAlign,
   handleTextAlignChange,
   modalMode,
-  styles,
-  handleSelectedFontStyleChange,
-  selectedFontStyle,
 }) => {
   return (
     <div
@@ -76,9 +61,6 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
           }
         )}
       >
-        {/* {!modalMode ? (
-          
-        ) : ()} */}
         {!modalMode ? (
           <div className="flex w-full flex-col gap-2">
             <h1 className="text-lg text-primary font-medium">
@@ -165,32 +147,6 @@ const FontSettingsPanel: React.FC<FontSettingsPanelProps> = ({
               value={previewText}
               onChange={handlePreviewTextChange}
             />
-          </div>
-        ) : (
-          ""
-        )}
-
-        {modalMode ? (
-          <div className="flex flex-col items-center gap-2 w-full relative">
-            <Select onValueChange={handleSelectedFontStyleChange}>
-              <SelectTrigger className="w-full max-w-full font-sans">
-                <SelectValue
-                  className="w-full"
-                  placeholder={`${selectedFontStyle || "Select font style"}`}
-                />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Style</SelectLabel>
-                  <SelectItem value="All">All</SelectItem>
-                  {styles?.map((style, index) => (
-                    <SelectItem key={index} value={style.toLowerCase()}>
-                      {style}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
           </div>
         ) : (
           ""
