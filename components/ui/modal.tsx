@@ -9,8 +9,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./carousel";
-import { Badge } from "./badge";
 import RandomShape from "../RandomShape";
+import { Tabs, TabsList, TabsTrigger } from "./tabs";
 
 interface ModalProps {
   isOpen: boolean;
@@ -234,6 +234,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
   };
 
   const handleStylefont = (event: any) => {
+    console.log("handleStylefont", event);
+
     setFontFamily(event);
   };
 
@@ -249,35 +251,39 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
           />
         </div>
         {data ? (
-          <div
-            className="w-full block md:flex flex-row mx-auto"
-            style={{
-              fontFamily: `"${fontFamily}", "${data.family}"`,
-            }}
-          >
+          <div className="w-full block md:flex flex-row mx-auto">
             <div className="w-full p-4">
               <div className="mb-8 flex flex-col items-center justify-center text-center gap-4 w-full max-w-screen-lg mx-auto">
-                <div className="text-7xl font-bold text-primary">
+                <div
+                  className="text-7xl font-bold text-primary"
+                  style={{
+                    fontFamily: `"${fontFamily}", "${data.family}"`,
+                  }}
+                >
                   {data.family}
                 </div>
 
-                <div className="text-base flex flex-wrap justify-center items-center gap-1 font-sans w-full max-w-2xl mx-auto">
-                  {data.fonts.map((item, index) => (
-                    <Badge
-                      key={index}
-                      variant={
-                        fontFamily === item.fullName ? "default" : "secondary"
-                      }
-                      className="cursor-pointer text-xs group-hover:bg-muted-foreground/10"
-                      onClick={() => handleStylefont(item.fullName)}
-                    >
-                      {item.style}
-                    </Badge>
-                  ))}
-                </div>
+                <Tabs value={fontFamily} onValueChange={handleStylefont}>
+                  <TabsList className="!flex flex-wrap h-full">
+                    {data.fonts.map((item, index) => (
+                      <TabsTrigger
+                        key={index}
+                        value={item.fullName || ""}
+                        className="w-fit"
+                      >
+                        {item.style}
+                      </TabsTrigger>
+                    ))}
+                  </TabsList>
+                </Tabs>
               </div>
 
-              <div className="flex pb-20 flex-col gap-20">
+              <div
+                className="flex pb-20 flex-col gap-20"
+                style={{
+                  fontFamily: `"${fontFamily}", "${data.family}"`,
+                }}
+              >
                 <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-2 border border-input rounded">
                   <div
                     className={cn(
