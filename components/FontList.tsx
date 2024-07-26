@@ -197,14 +197,14 @@ const FontList: React.FC = () => {
   const nextPage = () => {
     if (currentPage < totalPages()) {
       setCurrentPage(currentPage + 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -315,9 +315,7 @@ const FontList: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         data={modalData}
-      >
-        <div></div>
-      </Modal>
+      ></Modal>
     </div>
   );
 };

@@ -11,11 +11,19 @@ import {
 } from "./carousel";
 import RandomShape from "../RandomShape";
 import { Tabs, TabsList, TabsTrigger } from "./tabs";
+import { Button } from "./button";
+
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./card";
+import { Input } from "./input";
+import { Label } from "./label";
+import Link from "next/link";
+import { Checkbox } from "@radix-ui/react-checkbox";
+import { Textarea } from "./textarea";
+import { Alert, AlertDescription, AlertTitle } from "./alert";
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  children: React.ReactNode;
   data?: GroupedFont;
 }
 
@@ -110,7 +118,7 @@ const generateAllCharacters = () => {
   return characters;
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
+const Modal: React.FC<ModalProps> = ({ isOpen, onClose, data }) => {
   const [previewText, setPreviewText] = useState<string>(
     "Whereas disregard and contempt for human rights have resulted."
   );
@@ -123,6 +131,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
     "center"
   );
   const [selectedChar, setSelectedChar] = useState<string | null>("A");
+  const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   useEffect(() => {
     setFontFamily(data?.fonts[0]?.fullName || "");
@@ -193,6 +202,51 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
   const text3 =
     "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).";
 
+  const invoices = [
+    {
+      invoice: "INV001",
+      paymentStatus: "Paid",
+      totalAmount: "$250.00",
+      paymentMethod: "Credit Card",
+    },
+    {
+      invoice: "INV002",
+      paymentStatus: "Pending",
+      totalAmount: "$150.00",
+      paymentMethod: "PayPal",
+    },
+    {
+      invoice: "INV003",
+      paymentStatus: "Unpaid",
+      totalAmount: "$350.00",
+      paymentMethod: "Bank Transfer",
+    },
+    {
+      invoice: "INV004",
+      paymentStatus: "Paid",
+      totalAmount: "$450.00",
+      paymentMethod: "Credit Card",
+    },
+    {
+      invoice: "INV005",
+      paymentStatus: "Paid",
+      totalAmount: "$550.00",
+      paymentMethod: "PayPal",
+    },
+    {
+      invoice: "INV006",
+      paymentStatus: "Pending",
+      totalAmount: "$200.00",
+      paymentMethod: "Bank Transfer",
+    },
+    {
+      invoice: "INV007",
+      paymentStatus: "Unpaid",
+      totalAmount: "$300.00",
+      paymentMethod: "Credit Card",
+    },
+  ];
+
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("!overflow-hidden");
@@ -253,7 +307,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
         {data ? (
           <div className="w-full block md:flex flex-row mx-auto">
             <div className="w-full p-4">
-              <div className="mb-8 flex flex-col items-center justify-center text-center gap-4 w-full max-w-screen-lg mx-auto">
+              <div className="mb-8 flex flex-col items-center justify-center text-center gap-4 container">
                 <div
                   className="text-7xl font-bold text-primary"
                   style={{
@@ -284,7 +338,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                   fontFamily: `"${fontFamily}", "${data.family}"`,
                 }}
               >
-                <div className="w-full max-w-screen-lg mx-auto flex flex-col gap-2 border border-input rounded">
+                <div className="container flex flex-col border border-input rounded">
                   <div
                     className={cn(
                       "w-full text-7xl text-primary leading-none min-h-[300px] flex items-center mx-auto p-8",
@@ -299,9 +353,10 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                       letterSpacing: `${letterSpacing}rem`,
                       textAlign: textAlign,
                     }}
-                  >
-                    {previewText}
-                  </div>
+                    contentEditable={true}
+                    suppressContentEditableWarning
+                    dangerouslySetInnerHTML={{ __html: previewText }}
+                  ></div>
 
                   <FontSettingsPanel
                     previewText={previewText}
@@ -320,7 +375,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                   />
                 </div>
 
-                <div className="flex flex-col gap-6 w-full max-w-screen-lg mx-auto">
+                <div className="flex flex-col gap-6 container">
                   <h1
                     className="text-5xl font-bold text-primary tracking-wide"
                     style={{ lineHeight: 1.3 }}
@@ -341,7 +396,215 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                   </p>
                 </div>
 
-                <div className="w-full">
+                <div className="flex gap-4 relative container">
+                  <div className="w-[300px] h-[300px] aspect-square border sticky top-0 left-0 z-10 text-[10rem] leading-none overflow-hidden flex justify-center items-center text-center">
+                    <span>{selectedChar}</span>
+                  </div>
+                  <div className="w-full grid grid-cols-4 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-1">
+                    {allCharacters.map((char, index) => (
+                      <div
+                        key={index}
+                        onMouseEnter={() => setSelectedChar(char)}
+                        className="card border hover:bg-secondary aspect-square flex text-xl justify-center items-center text-center"
+                      >
+                        {char}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex flex-col container gap-4">
+                  <Label className="uppercase">Components</Label>
+                  <div className=" columns-1 md:columns-2 lg:columns-3 xl:columns-4">
+                    <section className="w-full mb-4">
+                      <div className="flex flex-wrap gap-4 w-full">
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Primary</CardTitle>
+                          </CardHeader>
+                          <CardContent className="flex flex-col gap-4">
+                            <Button>Primary</Button>
+                            <Button disabled>Disabled</Button>
+                            <Button size="sm">Small</Button>
+                            <Button size="lg">Large</Button>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Secondary</CardTitle>
+                          </CardHeader>
+                          <CardContent className="flex flex-col gap-4">
+                            <Button variant="secondary">Secondary</Button>
+                            <Button variant="secondary" disabled>
+                              Disabled
+                            </Button>
+                            <Button variant="secondary" size="sm">
+                              Small
+                            </Button>
+                            <Button variant="secondary" size="lg">
+                              Large
+                            </Button>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Outline</CardTitle>
+                          </CardHeader>
+                          <CardContent className="flex flex-col gap-4">
+                            <Button variant="outline">Outline</Button>
+                            <Button variant="outline" disabled>
+                              Disabled
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              Small
+                            </Button>
+                            <Button variant="outline" size="lg">
+                              Large
+                            </Button>
+                          </CardContent>
+                        </Card>
+
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Ghost</CardTitle>
+                          </CardHeader>
+                          <CardContent className="flex flex-col gap-4">
+                            <Button variant="ghost">Ghost</Button>
+                            <Button variant="ghost" disabled>
+                              Disabled
+                            </Button>
+                            <Button variant="ghost" size="sm">
+                              Small
+                            </Button>
+                            <Button variant="ghost" size="lg">
+                              Large
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </div>
+                    </section>
+
+                    <section className="w-full mb-4">
+                      <div className="flex flex-wrap gap-4 w-full">
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Basic Card</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p>
+                              This is a basic card with a header, content, and
+                              optional footer.
+                            </p>
+                          </CardContent>
+                          <CardFooter>
+                            <Button>Learn More</Button>
+                          </CardFooter>
+                        </Card>
+
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Elevated Card</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p>
+                              This is an elevated card with a subtle shadow
+                              effect to make it stand out.
+                            </p>
+                          </CardContent>
+                          <CardFooter>
+                            <Button variant="secondary">Learn More</Button>
+                          </CardFooter>
+                        </Card>
+
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Subtle Card</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p>
+                              This is a subtle card with a lighter background
+                              and border.
+                            </p>
+                          </CardContent>
+                          <CardFooter>
+                            <Button variant="outline">Learn More</Button>
+                          </CardFooter>
+                        </Card>
+
+                        <Card className="w-full">
+                          <CardHeader>
+                            <CardTitle>Bordered Card</CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <p>
+                              This is a card with a visible border around the
+                              edges.
+                            </p>
+                          </CardContent>
+                          <CardFooter>
+                            <Button variant="ghost">Learn More</Button>
+                          </CardFooter>
+                        </Card>
+                      </div>
+                    </section>
+
+                    <section className="w-full mb-4">
+                      <div className="flex flex-wrap gap-4 w-full">
+                        <Alert className="w-full">
+                          <AlertTitle>Primary Alert</AlertTitle>
+                          <AlertDescription>
+                            This is a primary alert with a title and
+                            description.
+                          </AlertDescription>
+                        </Alert>
+                        
+                        <Alert className="w-full" variant="destructive">
+                          <AlertTitle>Danger Alert</AlertTitle>
+                          <AlertDescription>
+                            This is a danger alert with a title and description.
+                          </AlertDescription>
+                        </Alert>
+                      </div>
+                    </section>
+
+                    <section className="w-full mb-4">
+                      <Card className="w-full">
+                        <CardHeader>
+                          <CardTitle>Contact Us</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <form className="grid gap-4">
+                            <div className="grid gap-1">
+                              <Label htmlFor="name">Name</Label>
+                              <Input id="name" placeholder="Enter your name" />
+                            </div>
+                            <div className="grid gap-1">
+                              <Label htmlFor="email">Email</Label>
+                              <Input
+                                id="email"
+                                type="email"
+                                placeholder="Enter your email"
+                              />
+                            </div>
+                            <div className="grid gap-1">
+                              <Label htmlFor="message">Message</Label>
+                              <Textarea
+                                id="message"
+                                placeholder="Enter your message"
+                              />
+                            </div>
+                            <Button type="submit">Submit</Button>
+                          </form>
+                        </CardContent>
+                      </Card>
+                    </section>
+                  </div>
+                </div>
+
+                <div className="w-full flex flex-col gap-4">
+                  <Label className="uppercase">Posters</Label>
                   <Carousel className="w-full">
                     <CarouselContent className="w-full -ml-0 gap-2">
                       {colorSchemes.map((color, index) => (
@@ -373,28 +636,11 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children, data }) => {
                     <CarouselNext />
                   </Carousel>
                 </div>
-
-                <div className="flex gap-4 relative w-full max-w-screen-lg mx-auto">
-                  <div className="w-[300px] min-w-[300px] h-[300px] aspect-square border sticky top-0 left-0 z-10 text-[10rem] leading-none overflow-hidden flex justify-center items-center text-center">
-                    <span>{selectedChar}</span>
-                  </div>
-                  <div className="w-full grid grid-cols-10 gap-1">
-                    {allCharacters.map((char, index) => (
-                      <div
-                        key={index}
-                        onMouseEnter={() => setSelectedChar(char)}
-                        className="card border hover:bg-secondary aspect-square flex text-xl justify-center items-center text-center"
-                      >
-                        {char}
-                      </div>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
           </div>
         ) : (
-          <div>{children}</div>
+          ""
         )}
       </div>
     </div>
